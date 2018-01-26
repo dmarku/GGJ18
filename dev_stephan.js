@@ -10,9 +10,9 @@ import GameController from './Scripts/GameController';
 const game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update});
 var gameController = new GameController();
 
-function preload () 
+function preload() 
 {
-    
+    game.load.image('sky', 'Assets/player_default.png');
 }
 
 function create () 
