@@ -10,7 +10,7 @@
     "http-serve": "^1.0.1"
   },
   "scripts": {
-    "serve": "http-serve .",
+    "serve": "http-serve ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
