@@ -1,15 +1,14 @@
 
-class GameController 
+export default class GameController 
 {
     // 0 = Init
     // 1 = Start
     // 2 = Loop
     // 3 = GameOver
-    state = 0;
 
     constructor() 
     {
-        
+        this.state = 0;
     }
 
     //#region GameSystem
@@ -19,7 +18,7 @@ class GameController
 
     }
 
-    Loop()
+    Update()
     {
 
     }
