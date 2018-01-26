@@ -1,10 +1,10 @@
 
-class Actor 
+export default class Actor 
 {
-    
-
-    constructor()
+    constructor(_sprite)
     {
-
+        this.sprite = _sprite;
+        this.sprite.animations.add('idle');
+        this.sprite.animations.play('idle', 12, true);
     }
 }

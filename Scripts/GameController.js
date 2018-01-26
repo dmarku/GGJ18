@@ -9,6 +9,12 @@ export default class GameController
     constructor() 
     {
         this.state = 0;
+        this.player = null;
+    }
+
+    RegisterPlayer(_player)
+    {
+        this.player = _player;
     }
 
     //#region GameSystem
@@ -20,7 +26,7 @@ export default class GameController
 
     Update()
     {
-
+        this.player.Update();
     }
 
     //#endregion
