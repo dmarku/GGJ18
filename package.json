@@ -7,10 +7,13 @@
     "phaser-ce": "^2.10.0"
   },
   "devDependencies": {
-    "http-serve": "^1.0.1"
+    "http-serve": "^1.0.1",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
   },
   "scripts": {
     "serve": "http-serve ./",
+    "dev": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
