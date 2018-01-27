@@ -14,6 +14,7 @@ function preload ()
 {
     game.load.spritesheet('player', 'Assets/player_01.png', 512, 512);
     game.load.spritesheet('goal', 'Assets/goal_01.png', 512, 512, 8);
+    game.load.spritesheet('enemy', 'Assets/enemy_placeholder.png', 512, 512);
 }
 
 let player;
@@ -54,6 +55,10 @@ let cones = new Cycle([
     {range: 150, angle: 120},
 ], 1);
 
+let enemies = [
+    {x: 640, y: 360}
+];
+
 let cursorKeys;
 
 class InputPair {
@@ -86,10 +91,18 @@ class InputPair {
     }
 }
 
+let enemySprites;
+
 function create () 
 {
+    enemySprites = enemies.map(enemy => {
+        let sprite = game.add.sprite(enemy.x, enemy.y, 'enemy');
+        sprite.scale.setTo(0.1);
+        return sprite;
+    });
+
     player = game.add.group();
-    player.position.setTo(640, 360);
+    player.position.setTo(50, 600);
 
     playerSprite = game.make.sprite(0, 0, 'player');
     playerSprite.scale.setTo(0.2);
