@@ -14,6 +14,7 @@ function preload ()
 {
     game.load.spritesheet('player', 'Assets/player_01.png', 512, 512);
     game.load.spritesheet('goal', 'Assets/goal_01.png', 512, 512, 8);
+    game.load.spritesheet('enemy', 'Assets/enemy_a_01.png', 512, 512, 8);
 }
 
 let player;
@@ -54,6 +55,10 @@ let cones = new Cycle([
     {range: 150, angle: 120},
 ], 1);
 
+let enemies = [
+    {x: 640, y: 360}
+];
+
 let cursorKeys;
 
 class InputPair {
@@ -86,10 +91,20 @@ class InputPair {
     }
 }
 
+let enemySprites;
+
 function create () 
 {
+    enemySprites = enemies.map(enemy => {
+        let sprite = game.add.sprite(enemy.x, enemy.y, 'enemy');
+        sprite.scale.setTo(0.2);
+        sprite.animations.add('idle');
+        sprite.animations.play('idle', 8, true);
+        return sprite;
+    });
+
     player = game.add.group();
-    player.position.setTo(640, 360);
+    player.position.setTo(50, 600);
 
     playerSprite = game.make.sprite(0, 0, 'player');
     playerSprite.scale.setTo(0.2);
@@ -112,6 +127,9 @@ function create ()
     conesNextKey.onDown.add(() => cones.next());
     conesPrevKey.onDown.add(() => cones.previous());
 
+    let scanKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    scanKey.onDown.add(() => scan());
+
     goal = game.add.sprite(900, 150, 'goal');
     goal.scale.setTo(0.2);
     goal.anchor.setTo(0.5);
@@ -125,8 +143,14 @@ function create ()
     playerSprite.body.setCircle(210);
 
     goal.body.setCircle(150);
-    goal.body.immovable = true;
+    goal.body.immovable = true;;
 }
+
+function scan () {
+
+}
+
+let foundGoal = false;
 
 function update () 
 {
@@ -154,11 +178,17 @@ function update ()
     let {range, angle} = cones.current();
 
     playerScanCone.clear();
-    playerScanCone.beginFill(0x202020);
+    playerScanCone.lineStyle(2, 0x00c000, 0.4);
+    playerScanCone.beginFill(0x00ff00, 0.1);
     playerScanCone.arc(0, 0, range, 0.5 * angle / 180 * Math.PI, -0.5 * angle / 180 * Math.PI, true);
-    playerScanCone.endFill();;
+    playerScanCone.endFill();
 
-    game.physics.arcade.overlap(playerSprite, goal, collisionHandler, null, this);
+    game.physics.arcade.overlap(playerSprite, goal, () => {
+        if (!foundGoal) {
+            foundGoal = true;
+            alert('You won!');
+        }
+    }, null, this);
 }
 
 function collisionHandler ()
