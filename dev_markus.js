@@ -12,6 +12,8 @@ var gameController = new GameController();
 
 function preload () 
 {
+    game.load.image('galaxie', 'Assets/galaxy_general.png');
+
     game.load.spritesheet('player', 'Assets/player_01.png', 512, 512);
     game.load.spritesheet('goal', 'Assets/goal_01.png', 512, 512, 8);
     game.load.spritesheet('enemy', 'Assets/enemy_a_01.png', 512, 512, 8);
@@ -41,11 +43,15 @@ class Cycle {
     next () {
         this.currentIndex++;
         if (this.currentIndex > this.variants.length - 1) this.currentIndex = 0;
+
+        return this.current();
     }
 
     previous () {
         this.currentIndex--;
         if (this.currentIndex < 0) this.currentIndex = this.variants.length - 1;
+
+        return this.current();
     }
 }
 
@@ -95,6 +101,8 @@ let enemySprites;
 
 function create () 
 {
+    game.add.sprite(0, 0, 'galaxie');
+    
     enemySprites = enemies.map(enemy => {
         let sprite = game.add.sprite(enemy.x, enemy.y, 'enemy');
         sprite.anchor.setTo(0.5);
