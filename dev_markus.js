@@ -97,9 +97,16 @@ function create ()
 {
     enemySprites = enemies.map(enemy => {
         let sprite = game.add.sprite(enemy.x, enemy.y, 'enemy');
+        sprite.anchor.setTo(0.5);
+
         sprite.scale.setTo(0.2);
         sprite.animations.add('idle');
         sprite.animations.play('idle', 8, true);
+
+        sprite.visible = false;
+
+        game.physics.enable(sprite, Phaser.Physics.ARCADE);
+
         return sprite;
     });
 
@@ -113,6 +120,10 @@ function create ()
     player.addChild(playerSprite);
 
     playerScanCone = game.make.graphics(0, 0)
+
+    game.physics.enable(playerScanCone, Phaser.Physics.ARCADE);
+    let { range } = cones.current();
+    playerScanCone.body.setCircle(range, -range, -range);
     player.addChild(playerScanCone);
 
     player.bringToTop(playerSprite);
@@ -147,7 +158,34 @@ function create ()
 }
 
 function scan () {
+    game.physics.arcade.overlap(playerScanCone, enemySprites, (player, enemy) => {
+        /*
+        let distancevector = Phaser.Point.subtract(player.position, enemy.position);
+        let direction = Phaser.Point.rotate(new Phaser.Point(1, 0), 0, 0, player.rotation);
+        let angleDifference = direction.angle(distancevector, true);
 
+        let { angle } = cones.current();
+        let inCone = Math.abs(angleDifference) < 0.5 * angle;
+
+        if (inCone) {
+            */
+            pinged(player, enemy);
+            /*
+        }
+        */
+    });
+    //pinged(player, enemySprites[0]);
+}
+
+function pinged (player, enemy) {
+    let blip = game.add.graphics(enemy.x, enemy.y);
+
+    blip.anchor.setTo(0.5);
+
+    blip.clear();
+    blip.beginFill(0xff0000, 0.5);
+    blip.drawCircle(0, 0, 50);
+    blip.endFill();
 }
 
 let foundGoal = false;
@@ -177,6 +215,8 @@ function update ()
 
     let {range, angle} = cones.current();
 
+    playerScanCone.body.setCircle(range, -range, -range);
+
     playerScanCone.clear();
     playerScanCone.lineStyle(2, 0x00c000, 0.4);
     playerScanCone.beginFill(0x00ff00, 0.1);
@@ -200,4 +240,5 @@ function render ()
 {
     game.debug.body(playerSprite);
     game.debug.body(goal);
+    game.debug.body(playerScanCone);
 }
