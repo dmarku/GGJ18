@@ -133,7 +133,7 @@ function update ()
             playerBackwardSpeed * Math.sin(player.rotation));
     }
 
-    gameController.Update();
+    //gameController.Update();
 
     let {range, angle} = cones.current();
 
