@@ -19,10 +19,41 @@ let player;
 let playerSprite;
 let playerScanCone;
 
+let playerForwardInput;
 let playerForwardSpeed = 3;
 let playerBackwardSpeed = -1.5;
 
 let cursorKeys;
+
+class InputPair {
+    constructor(game, positiveKey, negativeKey) {
+        this.game = game;
+
+        this.positiveKey = positiveKey;
+        this.negativeKey = negativeKey;
+
+        this.direction = 0;
+    }
+
+    update () {
+        this.direction = 0;
+        if (this.game.input.keyboard.isDown(this.positiveKey)) {
+            this.direction += 1;
+        }
+
+        if (this.game.input.keyboard.isDown(this.negativeKey)) {
+            this.direction -= 1;
+        }
+    }
+
+    isPositive () {
+        return this.direction > 0;
+    }
+
+    isNegative () {
+        return this.direction < 0;
+    }
+}
 
 function create () 
 {
@@ -41,10 +72,13 @@ function create ()
     player.bringToTop(playerSprite);
 
     cursorKeys = game.input.keyboard.createCursorKeys();
+
+    playerForwardInput = new InputPair(game, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN);
 }
 
 function update () 
 {
+    playerForwardInput.update();
     if (cursorKeys.left.isDown) {
         player.angle -= 5;
     }
@@ -53,13 +87,13 @@ function update ()
         player.angle += 5;
     }
 
-    if (cursorKeys.up.isDown) {
+    if (playerForwardInput.isPositive()) {
         player.position.add(
             playerForwardSpeed * -Math.sin(player.rotation),
             playerForwardSpeed * Math.cos(player.rotation));
     }
 
-    if (cursorKeys.down.isDown) {
+    if (playerForwardInput.isNegative()) {
         player.position.add(
             playerBackwardSpeed * -Math.sin(player.rotation),
             playerBackwardSpeed * Math.cos(player.rotation));
