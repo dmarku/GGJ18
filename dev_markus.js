@@ -23,6 +23,9 @@ let playerForwardInput;
 let playerForwardSpeed = 3;
 let playerBackwardSpeed = -1.5;
 
+let coneRange = 200;
+let coneAngle = 45;
+
 let cursorKeys;
 
 class InputPair {
@@ -103,6 +106,6 @@ function update ()
 
     playerScanCone.clear();
     playerScanCone.beginFill(0x202020);
-    playerScanCone.arc(0, 0, 200, 15 / 180 * Math.PI, -15 / 180 * Math.PI, true);
+    playerScanCone.arc(0, 0, coneRange, 0.5 * coneAngle / 180 * Math.PI, -0.5 * coneAngle / 180 * Math.PI, true);
     playerScanCone.endFill();
 }
