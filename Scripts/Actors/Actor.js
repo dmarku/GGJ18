@@ -19,7 +19,7 @@ export default class Actor
 
     SetVisible(status)
     {
-        this.sprite.visible = status;
+        this.sprite.aplha = 0.5;
     }
 
     Update()
