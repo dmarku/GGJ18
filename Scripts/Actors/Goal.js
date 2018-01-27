@@ -8,7 +8,7 @@ export default class Goal extends Actor
         _sprite.animations.add('idle');
         _sprite.animations.play('idle', 8, true);
 
-        _sprite.body.setCircle(150);
+        _sprite.body.setCircle(130, 75, 126);
     }
 
     ShowFog(radius)
