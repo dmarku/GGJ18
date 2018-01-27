@@ -158,7 +158,22 @@ function create ()
 }
 
 function scan () {
-    game.physics.arcade.overlap(playerScanCone, enemySprites, pinged);
+    game.physics.arcade.overlap(playerScanCone, enemySprites, (player, enemy) => {
+        /*
+        let distancevector = Phaser.Point.subtract(player.position, enemy.position);
+        let direction = Phaser.Point.rotate(new Phaser.Point(1, 0), 0, 0, player.rotation);
+        let angleDifference = direction.angle(distancevector, true);
+
+        let { angle } = cones.current();
+        let inCone = Math.abs(angleDifference) < 0.5 * angle;
+
+        if (inCone) {
+            */
+            pinged(player, enemy);
+            /*
+        }
+        */
+    });
     //pinged(player, enemySprites[0]);
 }
 
