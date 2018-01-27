@@ -25,6 +25,12 @@ export default class Player extends Actor
             {range: 300, angle: 45},
             {range: 150, angle: 120},
         ], 1);
+
+        this.conesLevels = [
+            300,
+            150,
+            0
+        ];
         
         this.scanCone = _game.make.graphics(0, 0);
         this.transform.addChild(this.scanCone);
