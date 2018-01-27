@@ -23,7 +23,7 @@ export default class InputPair
             this.direction -= 1;
         }
         
-        console.log(this.direction);
+        //console.log(this.direction);
     }
 
     isPositive () {

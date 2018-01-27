@@ -11,6 +11,7 @@ export default class GameController
         this.state = 0;
         this.player = null;
         this.enemies = null;
+        this.goal = null;
     }
 
     RegisterPlayer(_player)
@@ -21,6 +22,11 @@ export default class GameController
     RegisterEnemy(_enemy)
     {
         this.enemies.push(_enemy);
+    }
+
+    RegisterGoal(_goal)
+    {
+        this.goal = _goal;
     }
 
     //#region GameSystem
