@@ -7,17 +7,20 @@ const Phaser = require('phaser-ce');
 
 import GameController from './Scripts/GameController';
 
-const game = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update: update});
+const game = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 var gameController = new GameController();
 
 function preload () 
 {
     game.load.spritesheet('player', 'Assets/player_01.png', 512, 512);
+    game.load.spritesheet('goal', 'Assets/goal_01.png', 512, 512, 8);
 }
 
 let player;
 let playerSprite;
 let playerScanCone;
+
+let goal;
 
 let playerForwardInput;
 let playerForwardSpeed = 3;
@@ -89,7 +92,7 @@ function create ()
     player.position.setTo(640, 360);
 
     playerSprite = game.make.sprite(0, 0, 'player');
-    playerSprite.scale.setTo(0.1, 0.1);
+    playerSprite.scale.setTo(0.2);
     playerSprite.anchor.setTo(0.5);
     playerSprite.angle = -90;
     player.addChild(playerSprite);
@@ -108,6 +111,21 @@ function create ()
 
     conesNextKey.onDown.add(() => cones.next());
     conesPrevKey.onDown.add(() => cones.previous());
+
+    goal = game.add.sprite(900, 150, 'goal');
+    goal.scale.setTo(0.2);
+    goal.anchor.setTo(0.5);
+
+    goal.animations.add('idle');
+    goal.animations.play('idle', 8, true);
+
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.physics.enable([playerSprite, goal], Phaser.Physics.ARCADE);
+
+    playerSprite.body.setCircle(210);
+
+    goal.body.setCircle(150);
+    goal.body.immovable = true;
 }
 
 function update () 
@@ -133,12 +151,23 @@ function update ()
             playerBackwardSpeed * Math.sin(player.rotation));
     }
 
-    //gameController.Update();
-
     let {range, angle} = cones.current();
 
     playerScanCone.clear();
     playerScanCone.beginFill(0x202020);
     playerScanCone.arc(0, 0, range, 0.5 * angle / 180 * Math.PI, -0.5 * angle / 180 * Math.PI, true);
-    playerScanCone.endFill();
+    playerScanCone.endFill();;
+
+    game.physics.arcade.overlap(playerSprite, goal, collisionHandler, null, this);
+}
+
+function collisionHandler ()
+{
+    console.log('collision!');
+}
+
+function render ()
+{
+    game.debug.body(playerSprite);
+    game.debug.body(goal);
 }
