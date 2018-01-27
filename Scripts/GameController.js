@@ -72,8 +72,8 @@ export default class GameController
     {
         let distance = this.game.physics.arcade.distanceToXY(player.transform, enemy.sprite.x, enemy.sprite.y);
         let conRangeLevel = 3;
+        
         //let direction = (Math.atan2(enemy.transform.y - player.transform.y, enemy.transform.x - enemy.transform.x) * 180 / Math.PI);
-        //console.log(direction);
 
         for(let enemyCone of player.conesLevels) 
         {

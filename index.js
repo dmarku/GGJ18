@@ -21,13 +21,15 @@ var winscreen = null;
 // --- Functions ---
 function preload() 
 {
-    game.load.spritesheet('galaxie', 'Assets/galaxy_anim_01.png', 1920, 1080);
-    game.load.spritesheet('winscreen', 'Assets/win_screen_01.png', 1920, 1080);
+    game.load.spritesheet('galaxie', 'Assets/galaxy_anim_01.png', 960, 540);
+    game.load.spritesheet('winscreen', 'Assets/win_screen_01.png', 960, 540);
     game.load.spritesheet('player', 'Assets/player_01.png', 512, 512);
     game.load.spritesheet('goal', 'Assets/goal_01.png', 512, 512, 8);
 
     game.load.spritesheet('enemy', 'Assets/enemy_a_01.png', 512, 512, 8);
     game.load.spritesheet('fog', 'Assets/fog_01.png', 512, 512);
+
+    game.load.audio('bg_music', 'Assets/Space_Station_Experience.mp3');
 }
 
 let enemyData = [
@@ -38,13 +40,16 @@ function create()
 {
     // --- Init Background ---
     var galaxy = game.add.sprite(0, 0, 'galaxie');
-    galaxy.scale.setTo(0.67);
+    galaxy.scale.setTo(1.34);
     galaxy.animations.add('idle');
-    galaxy.animations.play('idle', 6, true);
+    galaxy.animations.play('idle', 3, true);
+
+    var music = game.add.audio('bg_music');
+    music.play();
 
     winscreen = game.add.sprite(0, 0, 'winscreen');
     winscreen.animations.add('idle');
-    winscreen.scale.setTo(0.67);
+    winscreen.scale.setTo(1.34);
     winscreen.animations.play('idle', 2, true);
     winscreen.visible = false;
 
