@@ -89,14 +89,14 @@ function update ()
 
     if (playerForwardInput.isPositive()) {
         player.position.add(
-            playerForwardSpeed * -Math.sin(player.rotation),
-            playerForwardSpeed * Math.cos(player.rotation));
+            playerForwardSpeed * Math.cos(player.rotation),
+            playerForwardSpeed * Math.sin(player.rotation));
     }
 
     if (playerForwardInput.isNegative()) {
         player.position.add(
-            playerBackwardSpeed * -Math.sin(player.rotation),
-            playerBackwardSpeed * Math.cos(player.rotation));
+            playerBackwardSpeed * Math.cos(player.rotation),
+            playerBackwardSpeed * Math.sin(player.rotation));
     }
 
     gameController.Update();
