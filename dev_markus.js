@@ -125,8 +125,10 @@ function create ()
     playerSprite.body.setCircle(210);
 
     goal.body.setCircle(150);
-    goal.body.immovable = true;
+    goal.body.immovable = true;;
 }
+
+let foundGoal = false;
 
 function update () 
 {
@@ -158,7 +160,12 @@ function update ()
     playerScanCone.arc(0, 0, range, 0.5 * angle / 180 * Math.PI, -0.5 * angle / 180 * Math.PI, true);
     playerScanCone.endFill();;
 
-    game.physics.arcade.overlap(playerSprite, goal, collisionHandler, null, this);
+    game.physics.arcade.overlap(playerSprite, goal, () => {
+        if (!foundGoal) {
+            foundGoal = true;
+            alert('You won!');
+        }
+    }, null, this);
 }
 
 function collisionHandler ()
