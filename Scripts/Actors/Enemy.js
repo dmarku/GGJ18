@@ -1,9 +1,15 @@
+import Actor from './Actor';
 
-class Enemy extends Actor
+export default class Enemy extends Actor
 {
-    constructor(_sprite, _scale)
+    constructor(_sprite, _scale, _game)
     {
-        super(_sprite, _scale);
+        super(_sprite, _scale, _game);
+    }
+
+    ShowFog(radius)
+    {
+        
     }
 
     Update()
