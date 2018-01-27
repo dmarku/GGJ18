@@ -20,7 +20,7 @@ var gameController = new GameController(game);
 // --- Functions ---
 function preload() 
 {
-    game.load.image('galaxie', 'Assets/galaxy_general.png');
+    game.load.spritesheet('galaxie', 'Assets/galaxy_anim_01.png', 1920, 1080);
     game.load.spritesheet('player', 'Assets/player_01.png', 512, 512);
     game.load.spritesheet('goal', 'Assets/goal_01.png', 512, 512, 8);
 
@@ -34,7 +34,9 @@ let enemyData = [
 function create() 
 {
     // --- Init Background ---
-    game.add.sprite(0, 0, 'galaxie');
+    var galaxy = game.add.sprite(0, 0, 'galaxie');
+    galaxy.animations.add('idle');
+    galaxy.animations.play('idle', 6, true);
 
     // --- Init Player ---
     // -- Sprite Setup --

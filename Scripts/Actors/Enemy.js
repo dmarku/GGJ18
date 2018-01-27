@@ -21,7 +21,7 @@ export default class Enemy extends Actor
 
     Update()
     {
-        console.log("EnemyUpdate");
+        //console.log("EnemyUpdate");
     }
 
 }
