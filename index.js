@@ -13,7 +13,7 @@ import Goal from './Scripts/Actors/Goal';
 import Enemy from './Scripts/Actors/Enemy';
 
 const game = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render});
-var gameController = new GameController();
+var gameController = new GameController(game);
 
 // --- Controls ---
 
@@ -42,16 +42,20 @@ function create()
 
     // -- Player Input --
     var playerInput = new InputPair(game, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN);
+    gameController.RegisterInput(playerInput);
+
+    this.scanKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    this.scanKey.onDown.add(() => gameController.Scan());
 
     // -- Create Player Instance --
-    var player = new Player(player_sprite, 0.2, playerInput, game);
-    player.transform.position.setTo(100, 100);
+    var player = new Player(player_sprite, 0.2, game);
+    player.transform.position.setTo(750, 100);
     gameController.RegisterPlayer(player);
 
     // --- Init Goal ---
     var goal_sprite = game.add.sprite(0,0, 'goal');
     var goal = new Goal(goal_sprite, 0.2, game);
-    goal.transform.position.setTo(640, 360);
+    goal.transform.position.setTo(530, 100);
     gameController.RegisterGoal(goal);
 
     // --- Init Enemies ---

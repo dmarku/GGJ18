@@ -9,7 +9,9 @@ export default class Enemy extends Actor
         _sprite.animations.add('idle');
         _sprite.animations.play('idle', 8, true);
 
-        _sprite.visible = false;
+        //_sprite.visible = false;
+
+        _sprite.body.setCircle(210);
     }
 
     ShowFog(radius)
@@ -19,7 +21,7 @@ export default class Enemy extends Actor
 
     Update()
     {
-        //console.log("EnemyUpdate");
+        console.log("EnemyUpdate");
     }
 
 }

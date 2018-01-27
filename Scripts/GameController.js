@@ -35,8 +35,6 @@ export default class GameController
     {
         this.input = _input;
         this.cursorKeys = this.game.input.keyboard.createCursorKeys();
-        this.scanKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        this.scanKey.onDown.add(() => this.Scan());
     }
 
     //#region GameSystem
