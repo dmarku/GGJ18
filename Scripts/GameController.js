@@ -59,7 +59,7 @@ export default class GameController
     {
         console.log("Scan");
 
-        this.game.physics.arcade.overlap(this.player.scanCone, this.enemies, (player, enemy) => {
+        this.game.physics.arcade.overlap(this.player.scanCone, this.enemies.map(e => e.sprite), (player, enemy) => {
             /*
             let distancevector = Phaser.Point.subtract(player.position, enemy.position);
             let direction = Phaser.Point.rotate(new Phaser.Point(1, 0), 0, 0, player.rotation);
@@ -70,7 +70,7 @@ export default class GameController
 
             if (inCone) {
                 */
-                enemyPinged(player, enemy);
+                this.enemyPinged(player, enemy);
                 /*
             }
             */
@@ -80,7 +80,7 @@ export default class GameController
 
     enemyPinged (player, enemy)
     {
-        let blip = game.add.graphics(enemy.x, enemy.y);
+        let blip = this.game.add.graphics(enemy.x, enemy.y);
 
         blip.anchor.setTo(0.5);
 
