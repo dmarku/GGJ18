@@ -4,8 +4,6 @@ const path = require('path');
 module.exports = {
     entry: {
         main: "./index.js",
-        dev_stephan: "./dev_stephan.js",
-        dev_markus: "./dev_markus.js",
     },
     output: {
         path: path.resolve(__dirname),
