@@ -16,8 +16,11 @@ function preload ()
 }
 
 let playerSprite;
+let playerScanCone;
+
 let playerForwardSpeed = 3;
 let playerBackwardSpeed = -1.5;
+
 let cursorKeys;
 
 function create () 
@@ -25,6 +28,12 @@ function create ()
     playerSprite = game.add.sprite(640, 360, 'player');
     playerSprite.scale.setTo(0.1, 0.1);
     playerSprite.anchor.setTo(0.5);
+
+    playerScanCone = game.make.graphics(0, 0)
+    playerScanCone.beginFill(0x202020);
+    playerScanCone.arc(0, 0, 500, -20, 20);
+    playerScanCone.endFill();
+    playerSprite.addChild(playerScanCone);
 
     cursorKeys = game.input.keyboard.createCursorKeys();
 }
