@@ -102,7 +102,7 @@ let enemySprites;
 function create () 
 {
     game.add.sprite(0, 0, 'galaxie');
-    
+
     enemySprites = enemies.map(enemy => {
         let sprite = game.add.sprite(enemy.x, enemy.y, 'enemy');
         sprite.anchor.setTo(0.5);
@@ -111,7 +111,7 @@ function create ()
         sprite.animations.add('idle');
         sprite.animations.play('idle', 8, true);
 
-        sprite.visible = false;
+        sprite.alpha = 0.5;
 
         game.physics.enable(sprite, Phaser.Physics.ARCADE);
 
@@ -125,6 +125,10 @@ function create ()
     playerSprite.scale.setTo(0.2);
     playerSprite.anchor.setTo(0.5);
     playerSprite.angle = -90;
+
+    playerSprite.animations.add('idle');
+    playerSprite.animations.play('idle', 8, true);
+
     player.addChild(playerSprite);
 
     playerScanCone = game.make.graphics(0, 0)
@@ -162,7 +166,7 @@ function create ()
     playerSprite.body.setCircle(210);
 
     goal.body.setCircle(150);
-    goal.body.immovable = true;;
+    goal.body.immovable = true;
 }
 
 function scan () {
@@ -191,7 +195,7 @@ function pinged (player, enemy) {
     blip.anchor.setTo(0.5);
 
     blip.clear();
-    blip.beginFill(0xff0000, 0.5);
+    blip.beginFill(0xffffff, 0.4);
     blip.drawCircle(0, 0, 50);
     blip.endFill();
 }
@@ -242,11 +246,4 @@ function update ()
 function collisionHandler ()
 {
     console.log('collision!');
-}
-
-function render ()
-{
-    game.debug.body(playerSprite);
-    game.debug.body(goal);
-    game.debug.body(playerScanCone);
 }

@@ -16,7 +16,10 @@ export default class Player extends Actor
 
         // --- Setup Object ---
         _sprite.anchor.setTo(0.5);
+        // turn to make the sprite face to the right
         _sprite.angle = -90;
+        _sprite.animations.add('idle');
+        _sprite.animations.play('idle', 12, true);
 
         // --- Cones ---
         this.cones = new Cycle([
@@ -28,6 +31,11 @@ export default class Player extends Actor
         this.scanCone = _game.make.graphics(0, 0);
         this.transform.addChild(this.scanCone);
 
+        _game.physics.enable(this.scanCone, Phaser.Physics.ARCADE);
+        let { range } = this.cones.current();
+        this.scanCone.body.setCircle(range, -range, -range);
+        this.transform.addChild(this.scanCone);
+
         // -- Add Cone Input --
         this.conesNextKey = _game.input.keyboard.addKey(Phaser.Keyboard.F),
         this.conesPrevKey = _game.input.keyboard.addKey(Phaser.Keyboard.R);
@@ -36,6 +44,8 @@ export default class Player extends Actor
 
         // -- Bring to top --
         _game.world.bringToTop(this.transform);
+
+        _sprite.body.setCircle(210);
     }
 
     Update()
@@ -78,8 +88,11 @@ export default class Player extends Actor
     {
         let {range, angle} = this.cones.current();
 
+        this.scanCone.body.setCircle(range, -range, -range);
+
         this.scanCone.clear();
-        this.scanCone.beginFill(0x202020);
+        this.scanCone.lineStyle(2, 0x00c000, 0.4);
+        this.scanCone.beginFill(0x00ff00, 0.1);
         this.scanCone.arc(0, 0, range, 0.5 * angle / 180 * Math.PI, -0.5 * angle / 180 * Math.PI, true);
         this.scanCone.endFill();
     }

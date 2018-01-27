@@ -53,53 +53,11 @@ class Cycle {
     }
 }
 
-let cones = new Cycle([
-    {range: 500, angle: 5},
-    {range: 300, angle: 45},
-    {range: 150, angle: 120},
-], 1);
-
-let enemies = [
+let enemyData = [
     {x: 640, y: 360}
 ];
 
-let cursorKeys;
-
-class InputPair {
-    constructor(game, positiveKey, negativeKey) {
-        this.game = game;
-
-        this.positiveKey = positiveKey;
-        this.negativeKey = negativeKey;
-
-        this.direction = 0;
-    }
-
-    update () {
-        this.direction = 0;
-        if (this.game.input.keyboard.isDown(this.positiveKey)) {
-            this.direction += 1;
-        }
-
-        if (this.game.input.keyboard.isDown(this.negativeKey)) {
-            this.direction -= 1;
-        }
-    }
-
-    isPositive () {
-        return this.direction > 0;
-    }
-
-    isNegative () {
-        return this.direction < 0;
-    }
-}
-
-let enemySprites;
-let fogSpriteEnemy;
-let fogSpriteGoal;
-
-function create () 
+function create() 
 {
     // -- Insert Stephan --
     // --- Init Background ---
@@ -126,28 +84,34 @@ function create ()
     playerScanCone = game.make.graphics(0, 0)
     player.addChild(playerScanCone);
 
-    player.bringToTop(playerSprite);
-
-    cursorKeys = game.input.keyboard.createCursorKeys();
-
-    playerForwardInput = new InputPair(game, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN);
-
-    let conesNextKey = game.input.keyboard.addKey(Phaser.Keyboard.F),
-        conesPrevKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
-
-    conesNextKey.onDown.add(() => cones.next());
-    conesPrevKey.onDown.add(() => cones.previous());
-
+    // -- Player Input --
+    var playerInput = new InputPair(game, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN);
     let scanKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    scanKey.onDown.add(() => scan());
+    scanKey.onDown.add(() => gameController.scan());
 
-    goal = game.add.sprite(900, 150, 'goal');
-    goal.scale.setTo(0.2);
-    goal.anchor.setTo(0.5);
+    // -- Create Player Instance --
+    var player = new Player(player_sprite, 0.2, playerInput, game);
+    player.transform.position.setTo(500, 100);
+    gameController.RegisterPlayer(player);
 
-    goal.animations.add('idle');
-    goal.animations.play('idle', 8, true);
+    // --- Init Goal ---
+    var goal_sprite = game.add.sprite(0,0, 'goal');
+    var goal = new Goal(goal_sprite, 0.2, game);
+    goal.transform.position.setTo(700, 100);
+    gameController.RegisterGoal(goal);
 
+    // --- Init Enemies ---
+    let enemies = enemyData.map(enemy => {
+        let sprite = game.make.sprite(0, 0, 'enemy');
+        return new Enemy(sprite, 0.2, game);
+    });
+
+    enemies.forEach(e => {
+        e.sprite.body.setCircle(200);
+        gameController.RegisterEnemy(e);
+    });
+
+    // --- Start Physics ---
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.physics.enable([playerSprite, goal], Phaser.Physics.ARCADE);
 
@@ -172,39 +136,10 @@ function scan () {
 
 let foundGoal = false;
 
-function update () 
+function update() 
 {
-    playerForwardInput.update();
-    if (cursorKeys.left.isDown) {
-        player.angle -= 5;
-    }
-
-    if (cursorKeys.right.isDown) {
-        player.angle += 5;
-    }
-
-    if (playerForwardInput.isPositive()) {
-        player.position.add(
-            playerForwardSpeed * Math.cos(player.rotation),
-            playerForwardSpeed * Math.sin(player.rotation));
-    }
-
-    if (playerForwardInput.isNegative()) {
-        player.position.add(
-            playerBackwardSpeed * Math.cos(player.rotation),
-            playerBackwardSpeed * Math.sin(player.rotation));
-    }
-
-    let {range, angle} = cones.current();
-
-    playerScanCone.clear();
-    playerScanCone.lineStyle(2, 0x00c000, 0.4);
-    playerScanCone.beginFill(0x00ff00, 0.1);
-    playerScanCone.arc(0, 0, range, 0.5 * angle / 180 * Math.PI, -0.5 * angle / 180 * Math.PI, true);
-    playerScanCone.endFill();
-
-    game.physics.arcade.overlap(playerSprite, goal, () => {
-        SetGoalVisibility(goal, 150, 1);
+    gameController.Update();
+    game.physics.arcade.overlap(gameController.player.transform, gameController.goal.transform, () => {
         if (!foundGoal) {
             foundGoal = true;
             alert('You won!');
@@ -212,39 +147,12 @@ function update ()
     }, null, this);
 }
 
-function collisionHandler ()
-{
-    console.log('collision!');
-}
-
 function render ()
 {
-    //game.debug.body(playerSprite);
-    //game.debug.body(goal);
-}
-
-// -- --
-function SetEnemyVisibility(enemy, distance, direction)
-{
-    SetVisibility(fogSpriteEnemy, enemy, distance, direction);
-}
-
-function SetGoalVisibility(goal, distance, direction)
-{
-    SetVisibility(fogSpriteGoal, goal, distance, direction);
-}
-
-function SetVisibility(obj, target, distance, direction)
-{
-    if(!obj.visible)
-    {
-        obj.visible = true;
-        obj.alpha = 1.0;
-    }
-    else if(obj.alpha > 0)
-    {
-        obj.alpha -= distance / 500;
-        target.aplha += distance / 500;
-        console.log(obj.alpha);
+    game.debug.body(gameController.player.sprite);
+    game.debug.body(gameController.goal.sprite);
+    game.debug.body(gameController.player.scanCone);
+    for (let e of gameController.enemies) {
+        game.debug.body(e.sprite);
     }
 }
