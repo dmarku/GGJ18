@@ -2,9 +2,9 @@ import Actor from './Actor';
 
 export default class Player extends Actor 
 {
-    constructor(_sprite)
+    constructor(_sprite, _scale)
     {
-        super(_sprite);
+        super(_sprite, _scale);
     }
 
     Update()

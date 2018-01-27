@@ -10,11 +10,17 @@ export default class GameController
     {
         this.state = 0;
         this.player = null;
+        this.enemies = null;
     }
 
     RegisterPlayer(_player)
     {
         this.player = _player;
+    }
+
+    RegisterEnemy(_enemy)
+    {
+        this.enemies.push(_enemy);
     }
 
     //#region GameSystem
@@ -27,6 +33,14 @@ export default class GameController
     Update()
     {
         this.player.Update();
+
+        if(this.enemies)
+        {
+            for(i = 0; i < this.enemies; i++) 
+            {
+                this.enemies[i].Update();
+            }
+        }
     }
 
     //#endregion

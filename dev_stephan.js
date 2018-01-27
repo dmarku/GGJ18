@@ -22,7 +22,7 @@ function create ()
 {
     game.add.sprite(0, 0, 'galaxie');
     var player_sprite = game.add.sprite(0, 0, 'player');
-    var player = new Player(player_sprite);
+    var player = new Player(player_sprite, 0.1);
     
     gameController.RegisterPlayer(player);
 }
