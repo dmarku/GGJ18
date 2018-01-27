@@ -50,14 +50,14 @@ function update ()
 
     if (cursorKeys.up.isDown) {
         playerSprite.position.add(
-            playerForwardSpeed * Math.cos(playerSprite.rotation),
-            playerForwardSpeed * Math.sin(playerSprite.rotation));
+            playerForwardSpeed * -Math.sin(playerSprite.rotation),
+            playerForwardSpeed * Math.cos(playerSprite.rotation));
     }
 
     if (cursorKeys.down.isDown) {
         playerSprite.position.add(
-            playerBackwardSpeed * Math.cos(playerSprite.rotation),
-            playerBackwardSpeed * Math.sin(playerSprite.rotation));
+            playerBackwardSpeed * -Math.sin(playerSprite.rotation),
+            playerBackwardSpeed * Math.cos(playerSprite.rotation));
     }
 
     gameController.Update();
