@@ -14,6 +14,7 @@ import Enemy from './Scripts/Actors/Enemy';
 
 const game = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render});
 var gameController = new GameController(game);
+var winscreen = null;
 
 // --- Controls ---
 
@@ -21,10 +22,12 @@ var gameController = new GameController(game);
 function preload() 
 {
     game.load.spritesheet('galaxie', 'Assets/galaxy_anim_01.png', 1920, 1080);
+    game.load.spritesheet('winscreen', 'Assets/win_screen_01.png', 1920, 1080);
     game.load.spritesheet('player', 'Assets/player_01.png', 512, 512);
     game.load.spritesheet('goal', 'Assets/goal_01.png', 512, 512, 8);
 
     game.load.spritesheet('enemy', 'Assets/enemy_a_01.png', 512, 512, 8);
+    game.load.spritesheet('fog', 'Assets/fog_01.png', 512, 512);
 }
 
 let enemyData = [
@@ -35,8 +38,15 @@ function create()
 {
     // --- Init Background ---
     var galaxy = game.add.sprite(0, 0, 'galaxie');
+    galaxy.scale.setTo(0.67);
     galaxy.animations.add('idle');
     galaxy.animations.play('idle', 6, true);
+
+    winscreen = game.add.sprite(0, 0, 'winscreen');
+    winscreen.animations.add('idle');
+    winscreen.scale.setTo(0.67);
+    winscreen.animations.play('idle', 2, true);
+    winscreen.visible = false;
 
     // --- Init Player ---
     // -- Sprite Setup --
@@ -63,7 +73,7 @@ function create()
     // --- Init Enemies ---
     let enemies = enemyData.map(enemy => {
         let sprite = game.add.sprite(enemy.x, enemy.y, 'enemy');
-        return new Enemy(sprite, 0.2, game);
+        return new Enemy(sprite, 0.2, game, game.add.sprite(enemy.x, enemy.y, 'fog'));
     });
 
     enemies.forEach(e => gameController.RegisterEnemy(e));
@@ -76,18 +86,26 @@ let foundGoal = false;
 
 function update() 
 {
+    if(foundGoal)
+        return;
+
     gameController.Update();
 
     game.physics.arcade.overlap(gameController.player.sprite, gameController.goal.sprite, () => {
-        if (!foundGoal) {
+        if(!foundGoal) 
+        {
             foundGoal = true;
-            alert('You won!');
+            game.world.bringToTop(winscreen);
+            winscreen.visible = true;
         }
     }, null, this);
 }
 
 function render()
 {
+    if(foundGoal)
+        return;
+
     game.debug.body(gameController.player.sprite);
     game.debug.body(gameController.goal.sprite);
     game.debug.body(gameController.player.scanCone);
