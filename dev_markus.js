@@ -23,8 +23,33 @@ let playerForwardInput;
 let playerForwardSpeed = 3;
 let playerBackwardSpeed = -1.5;
 
-let coneRange = 200;
-let coneAngle = 45;
+class Cycle {
+    // initialize this with a list of { range, angle } objects
+    constructor(variants, initialIndex) {
+        this.variants = variants;
+        this.currentIndex = initialIndex || 0;
+    }
+
+    current () {
+        return this.variants[this.currentIndex];
+    }
+
+    next () {
+        this.currentIndex++;
+        if (this.currentIndex > this.variants.length - 1) this.currentIndex = 0;
+    }
+
+    previous () {
+        this.currentIndex--;
+        if (this.currentIndex < 0) this.currentIndex = this.variants.length - 1;
+    }
+}
+
+let cones = new Cycle([
+    {range: 500, angle: 5},
+    {range: 300, angle: 45},
+    {range: 150, angle: 120},
+], 1);
 
 let cursorKeys;
 
@@ -77,6 +102,12 @@ function create ()
     cursorKeys = game.input.keyboard.createCursorKeys();
 
     playerForwardInput = new InputPair(game, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN);
+
+    let conesNextKey = game.input.keyboard.addKey(Phaser.Keyboard.F),
+        conesPrevKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
+
+    conesNextKey.onDown.add(() => cones.next());
+    conesPrevKey.onDown.add(() => cones.previous());
 }
 
 function update () 
@@ -104,8 +135,10 @@ function update ()
 
     gameController.Update();
 
+    let {range, angle} = cones.current();
+
     playerScanCone.clear();
     playerScanCone.beginFill(0x202020);
-    playerScanCone.arc(0, 0, coneRange, 0.5 * coneAngle / 180 * Math.PI, -0.5 * coneAngle / 180 * Math.PI, true);
+    playerScanCone.arc(0, 0, range, 0.5 * angle / 180 * Math.PI, -0.5 * angle / 180 * Math.PI, true);
     playerScanCone.endFill();
 }
