@@ -169,9 +169,10 @@ function update ()
     let {range, angle} = cones.current();
 
     playerScanCone.clear();
-    playerScanCone.beginFill(0x202020);
+    playerScanCone.lineStyle(2, 0x00c000, 0.4);
+    playerScanCone.beginFill(0x00ff00, 0.1);
     playerScanCone.arc(0, 0, range, 0.5 * angle / 180 * Math.PI, -0.5 * angle / 180 * Math.PI, true);
-    playerScanCone.endFill();;
+    playerScanCone.endFill();
 
     game.physics.arcade.overlap(playerSprite, goal, () => {
         if (!foundGoal) {
