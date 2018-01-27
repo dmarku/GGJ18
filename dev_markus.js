@@ -14,7 +14,7 @@ function preload ()
 {
     game.load.spritesheet('player', 'Assets/player_01.png', 512, 512);
     game.load.spritesheet('goal', 'Assets/goal_01.png', 512, 512, 8);
-    game.load.spritesheet('enemy', 'Assets/enemy_placeholder.png', 512, 512);
+    game.load.spritesheet('enemy', 'Assets/enemy_a_01.png', 512, 512, 8);
 }
 
 let player;
@@ -97,7 +97,9 @@ function create ()
 {
     enemySprites = enemies.map(enemy => {
         let sprite = game.add.sprite(enemy.x, enemy.y, 'enemy');
-        sprite.scale.setTo(0.1);
+        sprite.scale.setTo(0.2);
+        sprite.animations.add('idle');
+        sprite.animations.play('idle', 8, true);
         return sprite;
     });
 
@@ -125,6 +127,9 @@ function create ()
     conesNextKey.onDown.add(() => cones.next());
     conesPrevKey.onDown.add(() => cones.previous());
 
+    let scanKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    scanKey.onDown.add(() => scan());
+
     goal = game.add.sprite(900, 150, 'goal');
     goal.scale.setTo(0.2);
     goal.anchor.setTo(0.5);
@@ -139,6 +144,10 @@ function create ()
 
     goal.body.setCircle(150);
     goal.body.immovable = true;;
+}
+
+function scan () {
+
 }
 
 let foundGoal = false;
