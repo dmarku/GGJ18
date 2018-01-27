@@ -21,7 +21,7 @@ export default class Actor
 
     Update()
     {
-        console.log("ActorUpdate");
+        //console.log("ActorUpdate");
     }
 
     OnCollision()

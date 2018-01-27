@@ -3,16 +3,14 @@ import Cycle from './../ConeController';
 
 export default class Player extends Actor 
 {
-    constructor(_sprite, _scale, _input, _game)
+    constructor(_sprite, _scale, _game)
     {
         // --- Set Components ---
         super(_sprite, _scale, _game);
-        this.input = _input;
 
         // --- Set Input-Variales ---
         this.forwardSpeed = 3;
         this.backforwardSpeed = -1.5;
-        this.cursorKeys = _game.input.keyboard.createCursorKeys();
 
         // --- Setup Object ---
         _sprite.anchor.setTo(0.5);
@@ -51,32 +49,20 @@ export default class Player extends Actor
     Update()
     {
         //console.log("PlayerUpdate");
-        this.UpdateInput();
         this.UpdateCone();
     }
 
-    UpdateInput()
+    MoveBy(point)
     {
-        this.input.update();
+        this.transform.angle += point.x * 5;
 
-        if(this.cursorKeys.left.isDown) 
-        {
-            this.transform.angle -= 5;
-        }
-
-        if(this.cursorKeys.right.isDown) 
-        {
-            this.transform.angle += 5;
-        }
-
-        if(this.input.isPositive()) 
+        if(point.y > 0)
         {
             this.transform.position.add(
                 this.forwardSpeed * Math.cos(this.transform.rotation),
                 this.forwardSpeed * Math.sin(this.transform.rotation));
         }
-
-        if(this.input.isNegative()) 
+        else if(point.y < 0)
         {
             this.transform.position.add(
                 this.backforwardSpeed * Math.cos(this.transform.rotation),

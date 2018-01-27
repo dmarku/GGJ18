@@ -18,6 +18,6 @@ export default class Goal extends Actor
 
     Update()
     {
-        console.log("GoalUpdate");
+        //console.log("GoalUpdate");
     }
 }

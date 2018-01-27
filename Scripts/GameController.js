@@ -6,12 +6,14 @@ export default class GameController
     // 2 = Loop
     // 3 = GameOver
 
-    constructor() 
+    constructor(_game) 
     {
         this.state = 0;
         this.player = null;
         this.enemies = [];
         this.goal = null;
+        this.input = null;
+        this.game = _game;
     }
 
     RegisterPlayer(_player)
@@ -29,6 +31,14 @@ export default class GameController
         this.goal = _goal;
     }
 
+    RegisterInput(_input)
+    {
+        this.input = _input;
+        this.cursorKeys = this.game.input.keyboard.createCursorKeys();
+        this.scanKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        this.scanKey.onDown.add(() => this.Scan());
+    }
+
     //#region GameSystem
 
     StartGame()
@@ -38,15 +48,20 @@ export default class GameController
 
     Update()
     {
+        this.UpdateInput();
+
         this.player.Update();
-        for (let enemy of this.enemies) {
+        for(let enemy of this.enemies) 
+        {
             enemy.Update();
         }
     }
 
-    scan ()
+    Scan()
     {
-        game.physics.arcade.overlap(this.player.scanCone, this.enemies, (player, enemy) => {
+        console.log("Scan");
+
+        this.game.physics.arcade.overlap(this.player.scanCone, this.enemies, (player, enemy) => {
             /*
             let distancevector = Phaser.Point.subtract(player.position, enemy.position);
             let direction = Phaser.Point.rotate(new Phaser.Point(1, 0), 0, 0, player.rotation);
@@ -76,5 +91,26 @@ export default class GameController
         blip.drawCircle(0, 0, 50);
         blip.endFill();
     }
+
+    UpdateInput()
+    {
+        this.input.update();
+        let velocity = new Phaser.Point(0,0);
+
+
+        
+        
+
+        if(this.cursorKeys.left.isDown) 
+            velocity.x = -1;
+
+        if(this.cursorKeys.right.isDown) 
+            velocity.x = 1;
+
+        velocity.y = this.input.direction;
+        
+        this.player.MoveBy(velocity);
+    }
+
     //#endregion
 }
