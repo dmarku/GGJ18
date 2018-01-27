@@ -15,6 +15,7 @@ function preload ()
     game.load.spritesheet('player', 'Assets/player_01.png', 512, 512);
 }
 
+let player;
 let playerSprite;
 let playerScanCone;
 
@@ -25,15 +26,19 @@ let cursorKeys;
 
 function create () 
 {
-    playerSprite = game.add.sprite(640, 360, 'player');
+    player = game.add.group();
+    player.position.setTo(640, 360);
+
+    playerSprite = game.make.sprite(0, 0, 'player');
     playerSprite.scale.setTo(0.1, 0.1);
     playerSprite.anchor.setTo(0.5);
+    playerSprite.angle = -90;
+    player.addChild(playerSprite);
 
     playerScanCone = game.make.graphics(0, 0)
-    playerScanCone.beginFill(0x202020);
-    playerScanCone.arc(0, 0, 500, -20, 20);
-    playerScanCone.endFill();
-    playerSprite.addChild(playerScanCone);
+    player.addChild(playerScanCone);
+
+    player.bringToTop(playerSprite);
 
     cursorKeys = game.input.keyboard.createCursorKeys();
 }
@@ -41,24 +46,29 @@ function create ()
 function update () 
 {
     if (cursorKeys.left.isDown) {
-        playerSprite.angle -= 5;
+        player.angle -= 5;
     }
 
     if (cursorKeys.right.isDown) {
-        playerSprite.angle += 5;
+        player.angle += 5;
     }
 
     if (cursorKeys.up.isDown) {
-        playerSprite.position.add(
-            playerForwardSpeed * -Math.sin(playerSprite.rotation),
-            playerForwardSpeed * Math.cos(playerSprite.rotation));
+        player.position.add(
+            playerForwardSpeed * -Math.sin(player.rotation),
+            playerForwardSpeed * Math.cos(player.rotation));
     }
 
     if (cursorKeys.down.isDown) {
-        playerSprite.position.add(
-            playerBackwardSpeed * -Math.sin(playerSprite.rotation),
-            playerBackwardSpeed * Math.cos(playerSprite.rotation));
+        player.position.add(
+            playerBackwardSpeed * -Math.sin(player.rotation),
+            playerBackwardSpeed * Math.cos(player.rotation));
     }
 
     gameController.Update();
+
+    playerScanCone.clear();
+    playerScanCone.beginFill(0x202020);
+    playerScanCone.arc(0, 0, 200, 15 / 180 * Math.PI, -15 / 180 * Math.PI, true);
+    playerScanCone.endFill();
 }
