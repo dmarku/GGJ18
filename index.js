@@ -135,6 +135,5 @@ function render()
     game.debug.body(gameController.player.scanCone);
     for (let enemy of gameController.enemies) {
         game.debug.body(enemy.sprite, '#ff000080');
-        game.debug.body(enemy.targetingCircle, '#ff000080', false);
     }
 }
