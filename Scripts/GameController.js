@@ -153,10 +153,12 @@ export default class GameController
                 shockCharge.clear();
                 shockCharge.lineStyle(2, 0xff0000);
                 shockCharge.drawCircle(0, 0, radius * 2);
-
+                
                 shockCharge.scale.setTo(0);
                 let tween = this.game.add.tween(shockCharge.scale);
                 tween.to({x: 1, y: 1}, chargeTime, 'Linear', true, 0);
+
+                this.dangerSound.play();
 
                 tween.onComplete.add(() => {
                     this.shotSound.play();

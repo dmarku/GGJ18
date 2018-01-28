@@ -45,6 +45,7 @@ function preload()
     game.load.audio('bg_music', 'Assets/audio/Space_Station_Experience.mp3');
     game.load.audio('scan', 'Assets/audio/waves_01.ogg');
     game.load.audio('shot', 'Assets/audio/shot_01.ogg');
+    game.load.audio('danger', 'Assets/audio/danger_01.ogg');
 }
 
 let playerData = {x: 100, y: 360};
@@ -76,9 +77,11 @@ function create()
 {
     let scanSound = game.add.sound('scan');
     let shotSound = game.add.sound('shot');
+    let dangerSound = game.add.sound('shot');
 
     gameController.scanSound = scanSound;
     gameController.shotSound = shotSound;
+    gameController.dangerSound = dangerSound;
 
     // --- Start Physics ---
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -193,13 +196,16 @@ function update()
 
     gameController.Update();
 
-    game.physics.arcade.overlap(gameController.player.sprite, gameController.goal.sprite, () => {
-        if(!foundGoal) 
-        {
-            foundGoal = true;
-            showWinscreen();
-        }
-    }, null, this);
+    if(gameController.goal.sprite.visible)
+    {
+        game.physics.arcade.overlap(gameController.player.sprite, gameController.goal.sprite, () => {
+            if(!foundGoal) 
+            {
+                foundGoal = true;
+                showWinscreen();
+            }
+        }, null, this);
+    }
 }
 
 function showWinscreen()

@@ -29,7 +29,7 @@ export default class Goal extends Actor
         }
         else if(this.fog.alpha > 0)
         {
-            this.fog.alpha -= 0.05 * (level);
+            this.fog.alpha -= 0.1 * (level);
 
             if(this.fog.alpha < 0.2)
                 this.sprite.visible = true;
