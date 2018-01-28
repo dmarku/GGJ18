@@ -240,7 +240,7 @@ class Win extends Phaser.State {
         this.winscreen.animations.play('idle', 2, true);
         this.game.world.bringToTop(this.winscreen);
 
-        this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(() => {
+        this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(() => {
             this.game.state.start('play');
         });
     }
@@ -261,7 +261,7 @@ class GameOver extends Phaser.State {
         this.losescreen.animations.play('idle', 2, true);
         this.game.world.bringToTop(this.losescreen);
 
-        this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(() => {
+        this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(() => {
             this.game.state.start('play');
         });
     }
