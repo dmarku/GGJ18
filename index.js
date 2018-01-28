@@ -27,7 +27,9 @@ function preload()
     game.load.spritesheet('winscreen', 'Assets/win_screen_01.png', 1280, 720);
     game.load.spritesheet('losescreen', 'Assets/game_over_screen_01.png', 1280, 720);
     game.load.spritesheet('credtisscreen', 'Assets/credit_screen_01.png', 1280, 720);
-
+    game.load.image('creditsexit', 'Assets/credit_screen_EXIT_01.png', 92, 98);
+    game.load.image('creditsbutton', 'Assets/overlay_credit-button_01.png', 78, 73);
+    
     game.load.spritesheet('player', 'Assets/player_01.png', 512, 512);
     game.load.spritesheet('goal', 'Assets/goal_01.png', 512, 512, 8);
 
@@ -52,6 +54,7 @@ let lifebar;
 let enemyVisibleCount;
 let enemyCount;
 let creditsButton;
+let creditsexitButton;
 let restartButton;
 
 function create() 
@@ -143,8 +146,15 @@ function create()
         align: "center"
     });
 
-    creditsButton = game.add.button(game.world.centerX - 95, 400, 'button', showCredtisscreen, this, 2, 1, 0);
-    
+    creditsButton = game.add.button(game.world.centerX - 38, game.height, 'creditsbutton', showCredtisscreen, this, 20, 20, 0);
+    creditsButton.anchor.setTo(0, 1);
+
+    credtisscreen = game.add.sprite(0, 0, 'credtisscreen');
+    creditsexitButton = game.add.button(game.width - 100, 10, 'creditsexit', hideCreditsscreen, this, 20, 20, 0);
+
+    credtisscreen.visible = false;
+    creditsexitButton.visible = false;
+
     gameController.RegisterUI(lifebar, enemyVisibleCount, enemyCount);
 }
 
@@ -191,9 +201,16 @@ function showLosescreen()
 
 function showCredtisscreen()
 {
-    //console.debug("Credits");
-    credtisscreen = game.add.sprite(0, 0, 'credtisscreen');
+    credtisscreen.visible = true;
+    creditsexitButton.visible = true;
     game.world.bringToTop(credtisscreen);
+    game.world.bringToTop(creditsexitButton);
+}
+
+function hideCreditsscreen()
+{
+    credtisscreen.visible = false;
+    creditsexitButton.visible = false;
 }
 
 function render()
