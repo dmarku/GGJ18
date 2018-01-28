@@ -42,9 +42,6 @@ let enemyData = [
     {x: 750, y: 500}
 ];
 
-let playerData = {x: 750, y: 100};
-let goalData = {x: 530, y: 100};
-
 let hud;
 let lifebar;
 let enemyVisibleCount;
