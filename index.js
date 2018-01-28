@@ -32,12 +32,14 @@ function preload()
     //game.load.audio('bg_music', 'Assets/Space_Station_Experience.mp3');
 }
 
-let enemyData = [
-    {x: 640, y: 360}
-];
+let playerData = {x: 100, y: 360};
+let goalData = {x: 640, y: 600};
 
-let playerData = {x: 750, y: 100};
-let goalData = {x: 530, y: 100};
+let enemyData = [
+    {x: 640, y: 360},
+    {x: 400, y: 500},
+    {x: 750, y: 500}
+];
 
 function create() 
 {
