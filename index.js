@@ -15,6 +15,8 @@ import Enemy from './Scripts/Actors/Enemy';
 const game = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render});
 var gameController = new GameController(game);
 var winscreen = null;
+var losescreen = null;
+var credtisscreen = null;
 
 // --- Controls ---
 
@@ -23,6 +25,9 @@ function preload()
 {
     game.load.spritesheet('galaxie', 'Assets/galaxy_anim_01.png', 1280, 720);
     game.load.spritesheet('winscreen', 'Assets/win_screen_01.png', 1280, 720);
+    game.load.spritesheet('losescreen', 'Assets/game_over_screen_01.png', 1280, 720);
+    game.load.spritesheet('credtisscreen', 'Assets/credit_screen_01.png', 1280, 720);
+
     game.load.spritesheet('player', 'Assets/player_01.png', 512, 512);
     game.load.spritesheet('goal', 'Assets/goal_01.png', 512, 512, 8);
 
@@ -50,6 +55,8 @@ let hud;
 let lifebar;
 let enemyVisibleCount;
 let enemyCount;
+let creditsButton;
+let restartButton;
 
 function create() 
 {
@@ -140,6 +147,8 @@ function create()
         align: "center"
     });
 
+    creditsButton = game.add.button(game.world.centerX - 95, 400, 'button', showCredtisscreen, this, 2, 1, 0);
+    
     gameController.RegisterUI(lifebar, enemyVisibleCount, enemyCount);
 }
 
@@ -150,7 +159,8 @@ function update()
 {
     if (!playerDead && gameController.player.health <= 0) {
         playerDead = true;
-        alert("You have lost all your health. Game Over. D:");
+        showLosescreen();
+        //alert("You have lost all your health. Game Over. D:");
     }
 
     if(foundGoal || playerDead)
@@ -173,6 +183,21 @@ function showWinscreen()
     winscreen.animations.add('idle');
     winscreen.animations.play('idle', 2, true);
     game.world.bringToTop(winscreen);
+}
+
+function showLosescreen()
+{
+    losescreen = game.add.sprite(0, 0, 'losescreen');
+    losescreen.animations.add('idle');
+    losescreen.animations.play('idle', 2, true);
+    game.world.bringToTop(losescreen);
+}
+
+function showCredtisscreen()
+{
+    //console.debug("Credits");
+    credtisscreen = game.add.sprite(0, 0, 'credtisscreen');
+    game.world.bringToTop(credtisscreen);
 }
 
 function render()
