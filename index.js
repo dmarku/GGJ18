@@ -101,10 +101,16 @@ function create()
 
 
 let foundGoal = false;
+let playerDead = false;
 
 function update() 
 {
-    if(foundGoal)
+    if (gameController.player.health <= 0) {
+        playerDead = true;
+        alert("You have lost all your health. Game Over. D:");
+    }
+
+    if(foundGoal || playerDead)
         return;
 
     gameController.Update();

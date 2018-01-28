@@ -53,10 +53,6 @@ export default class GameController
         {
             enemy.Update();
         }
-
-        if (this.player.health <= 0) {
-            alert("You have lost all your health. Game Over. D:");
-        }
     }
 
     Scan()
