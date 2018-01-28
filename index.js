@@ -18,6 +18,9 @@ var winscreen = null;
 var losescreen = null;
 var credtisscreen = null;
 
+let foundGoal = false;
+let playerDead = false;
+
 // --- Controls ---
 
 // --- Functions ---
@@ -37,17 +40,27 @@ function preload()
     game.load.spritesheet('fog', 'Assets/fog_01.png', 512, 512);
     game.load.image('hud', 'Assets/overlay_01.png', 1280, 720);
 
-    game.load.audio('bg_music', 'Assets/Space_Station_Experience.mp3');
+    game.load.audio('bg_music', 'Assets/audio/Space_Station_Experience.mp3');
+    game.load.audio('scan', 'Assets/audio/waves_01.ogg');
+    game.load.audio('shot', 'Assets/audio/shot_01.ogg');
 }
 
 let playerData = {x: 100, y: 360};
-let goalData = {x: 640, y: 600};
 
-let enemyData = [
-    {x: 640, y: 360},
-    {x: 400, y: 500},
-    {x: 750, y: 500}
-];
+let goalData = {
+    x: Math.random() * 700 + 400,
+    y: Math.random() * 600 + 60
+};
+
+let enemycount = 20;
+
+let enemyData = [];
+for (let i = 0; i < enemycount; i++) {
+    enemyData.push({
+        x: Math.random() * 1000 + 140,
+        y: Math.random() * 600 + 60
+    });
+}
 
 let hud;
 let lifebar;
@@ -59,6 +72,12 @@ let restartButton;
 
 function create() 
 {
+    let scanSound = this.game.add.sound('scan');
+    let shotSound = this.game.add.sound('shot');
+
+    gameController.scanSound = scanSound;
+    gameController.shotSound = shotSound;
+
     // --- Start Physics ---
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -68,7 +87,7 @@ function create()
     galaxy.animations.play('idle', 3, true);
 
     // -- Play Music --
-    var music = game.add.audio('bg_music');
+    var music = game.add.audio('bg_music', 0.5);
     music.loopFull();
 
     // --- Init Player ---
@@ -158,8 +177,6 @@ function create()
     gameController.RegisterUI(lifebar, enemyVisibleCount, enemyCount);
 }
 
-let foundGoal = false;
-let playerDead = false;
 
 function update() 
 {
@@ -215,12 +232,11 @@ function hideCreditsscreen()
 
 function render()
 {
-    if(foundGoal)
-        return;
-
-    game.debug.body(gameController.player.sprite);
-    game.debug.body(gameController.goal.sprite);
+    //game.debug.body(gameController.player.sprite);
+    //game.debug.body(gameController.goal.sprite);
+    /*
     for (let enemy of gameController.enemies) {
         game.debug.body(enemy.sprite, '#ff000080');
     }
+    */
 }
