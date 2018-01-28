@@ -36,11 +36,15 @@ function preload()
 let playerData = {x: 100, y: 360};
 let goalData = {x: 640, y: 600};
 
-let enemyData = [
-    {x: 640, y: 360},
-    {x: 400, y: 500},
-    {x: 750, y: 500}
-];
+let enemycount = 20;
+
+let enemyData = [];
+for (let i = 0; i < enemycount; i++) {
+    enemyData.push({
+        x: Math.random() * 1000 + 140,
+        y: Math.random() * 600 + 60
+    });
+}
 
 let hud;
 let lifebar;
