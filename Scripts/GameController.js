@@ -134,6 +134,19 @@ export default class GameController
 
                 shockArea.body.setCircle(radius, 0, 0);
 
+                let crosshair = this.game.add.sprite(x, y, 'crosshair');
+                crosshair.scale.setTo(0.5);
+                crosshair.anchor.setTo(0.5);
+
+                let chRotateTween = this.game.add.tween(crosshair);
+                chRotateTween.to({angle: 360}, 6000, 'Linear', true, 0, true);
+
+                let chScaleTween = this.game.add.tween(crosshair.scale);
+                chScaleTween.from({x: 1.5, y: 1.5}, chargeTime, 'Linear', true, 0, false);
+
+                let chAlphaTween = this.game.add.tween(crosshair);
+                chAlphaTween.from({alpha: 0.2}, chargeTime, 'Linear', true, 0, false);
+
                 let shockCharge = this.game.add.graphics(x, y);
                 shockCharge.anchor.setTo(0.5);
                 
@@ -155,6 +168,7 @@ export default class GameController
                     });
                     shockArea.destroy();
                     shockCharge.destroy();
+                    crosshair.destroy();
                 });
             }
         }

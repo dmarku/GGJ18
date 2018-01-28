@@ -36,6 +36,8 @@ function preload()
 
     game.load.spritesheet('enemy', 'Assets/enemy_a_01.png', 512, 512, 8);
     game.load.spritesheet('fog', 'Assets/fog_01.png', 512, 512);
+    game.load.image('crosshair', 'Assets/cross_01.png', 512, 512);
+
     game.load.image('hud', 'Assets/overlay_01.png', 1280, 720);
 
     game.load.audio('bg_music', 'Assets/audio/Space_Station_Experience.mp3');
@@ -69,8 +71,8 @@ let restartButton;
 
 function create() 
 {
-    let scanSound = this.game.add.sound('scan');
-    let shotSound = this.game.add.sound('shot');
+    let scanSound = game.add.sound('scan');
+    let shotSound = game.add.sound('shot');
 
     gameController.scanSound = scanSound;
     gameController.shotSound = shotSound;
