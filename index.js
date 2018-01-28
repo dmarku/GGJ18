@@ -18,6 +18,9 @@ var winscreen = null;
 var losescreen = null;
 var credtisscreen = null;
 
+let foundGoal = false;
+let playerDead = false;
+
 // --- Controls ---
 
 // --- Functions ---
@@ -35,7 +38,9 @@ function preload()
     game.load.spritesheet('fog', 'Assets/fog_01.png', 512, 512);
     game.load.image('hud', 'Assets/overlay_01.png', 1280, 720);
 
-    game.load.audio('bg_music', 'Assets/Space_Station_Experience.mp3');
+    game.load.audio('bg_music', 'Assets/audio/Space_Station_Experience.mp3');
+    game.load.audio('scan', 'Assets/audio/waves_01.ogg');
+    game.load.audio('shot', 'Assets/audio/shot_01.ogg');
 }
 
 let playerData = {x: 100, y: 360};
@@ -64,6 +69,12 @@ let restartButton;
 
 function create() 
 {
+    let scanSound = this.game.add.sound('scan');
+    let shotSound = this.game.add.sound('shot');
+
+    gameController.scanSound = scanSound;
+    gameController.shotSound = shotSound;
+
     // --- Start Physics ---
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -73,7 +84,7 @@ function create()
     galaxy.animations.play('idle', 3, true);
 
     // -- Play Music --
-    var music = game.add.audio('bg_music');
+    var music = game.add.audio('bg_music', 0.5);
     music.loopFull();
 
     // --- Init Player ---
@@ -156,8 +167,6 @@ function create()
     gameController.RegisterUI(lifebar, enemyVisibleCount, enemyCount);
 }
 
-let foundGoal = false;
-let playerDead = false;
 
 function update() 
 {
@@ -206,11 +215,6 @@ function showCredtisscreen()
 
 function render()
 {
-    //game.debug.body(gameController.player.sprite);
-    //game.debug.body(gameController.goal.sprite);
-    /*
-    for (let enemy of gameController.enemies) {
-        game.de
     //game.debug.body(gameController.player.sprite);
     //game.debug.body(gameController.goal.sprite);
     /*

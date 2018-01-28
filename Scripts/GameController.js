@@ -8,7 +8,6 @@ export default class GameController
 
     constructor(_game) 
     {
-        this.state = 0;
         this.player = null;
         this.enemies = [];
         this.goal = null;
@@ -75,6 +74,7 @@ export default class GameController
 
     Scan()
     {
+        this.scanSound.play();
         console.log("Scan");
 
         for(let enemy of this.enemies) 
@@ -146,6 +146,7 @@ export default class GameController
                 tween.to({x: 1, y: 1}, chargeTime, 'Linear', true, 0);
 
                 tween.onComplete.add(() => {
+                    this.shotSound.play();
                     // do damage if in range
                     this.game.physics.arcade.overlap(shockArea, player.sprite, () => {
                         player.health -= 1;
