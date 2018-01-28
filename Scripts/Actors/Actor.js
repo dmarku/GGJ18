@@ -14,18 +14,23 @@ export default class Actor
         this.game.physics.enable(_sprite, Phaser.Physics.ARCADE);
     }
 
-    SetVisible(status)
+    UpdateVisibility(level)
     {
-        this.sprite.aplha = 0.5;
+        if(!this.fog.visible)
+        {
+            this.fog.visible = true;
+        }
+        else if(this.fog.alpha > 0)
+        {
+            this.fog.alpha -= 0.05 * (level);
+
+            if(this.fog.alpha < 0.2)
+                this.sprite.visible = true;
+        }
     }
 
     Update()
     {
         //console.log("ActorUpdate");
-    }
-
-    OnCollision()
-    {
-        
     }
 }

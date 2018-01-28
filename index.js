@@ -71,7 +71,7 @@ function create()
 
     // --- Init Goal ---
     var goal_sprite = game.add.sprite(0,0, 'goal');
-    var goal = new Goal(goal_sprite, 0.2, game);
+    var goal = new Goal(goal_sprite, 0.2, game, game.add.sprite(530, 100, 'fog'));
     goal.transform.position.setTo(530, 100);
     gameController.RegisterGoal(goal);
 

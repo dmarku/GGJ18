@@ -2,18 +2,22 @@ import Actor from './Actor';
 
 export default class Goal extends Actor
 {
-    constructor(_sprite, _scale, _game)
+    constructor(_sprite, _scale, _game, _fog)
     {
         super(_sprite, _scale, _game);
         _sprite.animations.add('idle');
         _sprite.animations.play('idle', 8, true);
+        _sprite.visible = false;
 
+        // Add Physics
         _sprite.body.setCircle(130, 75, 126);
-    }
-
-    ShowFog(radius)
-    {
         
+        // Add Fog
+        this.fog = _fog;
+        this.fog.anchor.setTo(0.5);
+        this.fog.scale.setTo(_scale * 2);
+        this.transform.addChild(this.fog);
+        this.fog.visible = false;
     }
 
     Update()

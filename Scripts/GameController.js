@@ -66,6 +66,11 @@ export default class GameController
                 this.EnemyPinged(this.player, enemy);
             });
         }
+
+        this.game.physics.arcade.overlap(this.player.scanCone, this.goal.sprite, (player, goalSprite) => 
+            {
+                this.GoalPinged(this.player, this.goal);
+            });
     }
 
     EnemyPinged(player, enemy)
@@ -73,41 +78,52 @@ export default class GameController
         let distance = this.game.physics.arcade.distanceToXY(player.transform, enemy.sprite.x, enemy.sprite.y);
         let conRangeLevel = 3;
         
-        //let direction = (Math.atan2(enemy.transform.y - player.transform.y, enemy.transform.x - enemy.transform.x) * 180 / Math.PI);
-
-        for(let enemyCone of player.conesLevels) 
-        {
-            if(distance < enemyCone)
-            {
-                conRangeLevel -= 1;
-            }
-        }
-
-        enemy.UpdateVisibility(conRangeLevel);
-
-        /*
-        let distancevector = Phaser.Point.subtract(player.position, enemy.position);
-        let direction = Phaser.Point.rotate(new Phaser.Point(1, 0), 0, 0, player.rotation);
-        let angleDifference = direction.angle(distancevector, true);
-
-        let { angle } = cones.current();
-        let inCone = Math.abs(angleDifference) < 0.5 * angle;
-
-        if(inCone) 
-        {
+        let direction = (Math.atan2(enemy.sprite.y - player.transform.y, enemy.sprite.x - player.transform.x) * 180 / Math.PI);
+        direction += 180;
+        let angle = (player.transform.worldRotation * 180) / Math.PI;
+        angle += 180;
+        let sightAngle = Math.abs(direction - angle);
+        // console.log(sightAngle);
             
+        if(sightAngle <= player.cones.current().angle)
+        {
+            for(let conesLevel of player.conesLevels) 
+            {
+                if(distance < conesLevel)
+                {
+                    conRangeLevel -= 1;
+                }
+            }
+    
+            enemy.UpdateVisibility(conRangeLevel);
         }
-        */
+    }
 
-        /*Phaser.Point.subtract(player.position, enemy.position);
-        let blip = this.game.add.graphics(enemy.x, enemy.y);
-
-        blip.anchor.setTo(0.5);
-        blip.clear();
-        blip.beginFill(0xffffff, 0.4);
-        blip.drawCircle(0, 0, 50);
-        blip.endFill();
-        */
+    GoalPinged(player, goal)
+    {
+        console.log("GoalPinged");
+        let distance = this.game.physics.arcade.distanceToXY(player.transform, goal.sprite.x, goal.sprite.y);
+        let conRangeLevel = 3;
+        
+        let direction = (Math.atan2(goal.sprite.y - player.transform.y, goal.sprite.x - player.transform.x) * 180 / Math.PI);
+        direction += 180;
+        let angle = (player.transform.worldRotation * 180) / Math.PI;
+        angle += 180;
+        let sightAngle = Math.abs(direction - angle);
+        console.log(sightAngle);
+            
+        if(sightAngle <= player.cones.current().angle)
+        {
+            for(let conesLevel of player.conesLevels) 
+            {
+                if(distance < conesLevel)
+                {
+                    conRangeLevel -= 1;
+                }
+            }
+    
+            goal.UpdateVisibility(conRangeLevel);
+        }
     }
 
     UpdateInput()
