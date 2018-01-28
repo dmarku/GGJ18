@@ -146,7 +146,7 @@ function create()
         align: "center"
     });
 
-    creditsButton = game.add.button(game.world.centerX - 38, game.height, 'creditsbutton', showCredtisscreen, this, 20, 20, 0);
+    creditsButton = game.add.button(game.world.centerX - 38, game.height +2, 'creditsbutton', showCredtisscreen, this, 20, 20, 0);
     creditsButton.anchor.setTo(0, 1);
 
     credtisscreen = game.add.sprite(0, 0, 'credtisscreen');
