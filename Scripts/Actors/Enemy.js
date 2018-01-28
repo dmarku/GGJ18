@@ -23,6 +23,7 @@ export default class Enemy extends Actor
 
         // --- Targeting system ---
         this.targetingRange = 300;
+        this.shockChargeTime = 3000;
     }
 
     UpdateVisibility(level)

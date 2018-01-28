@@ -101,6 +101,7 @@ export default class GameController
             if (distance < enemy.targetingRange) {
                 let {x, y} = player.sprite.worldPosition;
                 let radius = 150;
+                let chargeTime = enemy.shockChargeTime;
 
                 let shockArea = this.game.add.graphics(x, y);
                 shockArea.anchor.setTo(0.5);
@@ -122,7 +123,7 @@ export default class GameController
 
                 shockCharge.scale.setTo(0);
                 let tween = this.game.add.tween(shockCharge.scale);
-                tween.to({x: 1, y: 1}, 5000, 'Linear', true, 0);
+                tween.to({x: 1, y: 1}, chargeTime, 'Linear', true, 0);
 
                 tween.onComplete.add(() => {
                     // do damage if in range
