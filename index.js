@@ -41,6 +41,9 @@ let goalData = {x: 530, y: 100};
 
 function create() 
 {
+    // --- Start Physics ---
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+
     // --- Init Background ---
     var galaxy = game.add.sprite(0, 0, 'galaxie');
     galaxy.scale.setTo(1.34);
@@ -79,22 +82,36 @@ function create()
     gameController.RegisterGoal(goal);
 
     // --- Init Enemies ---
-    let enemies = enemyData.map(enemy => {
-        let sprite = game.add.sprite(enemy.x, enemy.y, 'enemy');
-        return new Enemy(sprite, 0.2, game, game.add.sprite(enemy.x, enemy.y, 'fog'));
+    let enemies = enemyData.map(({x, y}) => {
+        let sprite = game.add.sprite(x, y, 'enemy');
+        let fog = game.add.sprite(x, y, 'fog');
+        let circle = game.make.graphics(x, y);
+        let tween = game.add.tween(circle.scale);
+        tween.to({x: 1, y: 1}, 5000, 'Linear', false);
+        return new Enemy(sprite, 0.2, game, fog, circle, tween);
     });
 
-    enemies.forEach(e => gameController.RegisterEnemy(e));
+    enemies.forEach(e => {
+        gameController.RegisterEnemy(e);
+    });
 
-    // --- Start Physics ---
-    game.physics.startSystem(Phaser.Physics.ARCADE);
+    // --- UI ---
+
 }
 
+
+
 let foundGoal = false;
+let playerDead = false;
 
 function update() 
 {
-    if(foundGoal)
+    if (!playerDead && gameController.player.health <= 0) {
+        playerDead = true;
+        alert("You have lost all your health. Game Over. D:");
+    }
+
+    if(foundGoal || playerDead)
         return;
 
     gameController.Update();
@@ -118,6 +135,6 @@ function render()
     game.debug.body(gameController.goal.sprite);
     game.debug.body(gameController.player.scanCone);
     for (let enemy of gameController.enemies) {
-        game.debug.body(enemy.sprite);
+        game.debug.body(enemy.sprite, '#ff000080');
     }
 }

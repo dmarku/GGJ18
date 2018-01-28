@@ -12,7 +12,7 @@ export default class Enemy extends Actor
 
         _sprite.visible = false;
         // Add Collision
-        _sprite.body.setCircle(210);
+        _sprite.body.setCircle(170, 100, 117);
 
         // Add Fog
         this.fog = _fog;
@@ -20,6 +20,9 @@ export default class Enemy extends Actor
         this.fog.scale.setTo(_scale * 2);
         this.transform.addChild(this.fog);
         this.fog.visible = false;
+
+        // --- Targeting system ---
+        this.targetingRange = 300;
     }
 
     UpdateVisibility(level)
@@ -40,7 +43,6 @@ export default class Enemy extends Actor
 
     Update()
     {
-        //console.log("EnemyUpdate");
     }
 
 }
