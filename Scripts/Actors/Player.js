@@ -8,6 +8,8 @@ export default class Player extends Actor
         // --- Set Components ---
         super(_sprite, _scale, _game);
 
+        this.health = 5;
+
         // --- Set Input-Variales ---
         this.forwardSpeed = 3;
         this.backforwardSpeed = -1.5;
@@ -49,7 +51,7 @@ export default class Player extends Actor
         // -- Bring to top --
         _game.world.bringToTop(this.transform);
 
-        _sprite.body.setCircle(210);
+        _sprite.body.setCircle(165, 115, 55);
     }
 
     Update()
