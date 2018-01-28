@@ -42,7 +42,7 @@ function preload()
 
     game.load.image('hud', 'Assets/overlay_01.png', 1280, 720);
 
-    game.load.audio('bg_music', 'Assets/audio/bensound-relaxing.mp3');
+    game.load.audio('bg_music', 'Assets/audio/bensound-relaxing.ogg');
     game.load.audio('scan', 'Assets/audio/waves_01.ogg');
     game.load.audio('shot', 'Assets/audio/shot_01.ogg');
     game.load.audio('danger', 'Assets/audio/danger_02.ogg');
@@ -77,9 +77,9 @@ let restartButton;
 function create() 
 {
     let scanSound = game.add.sound('scan');
-    let shotSound = game.add.sound('shot');
-    let dangerSound = game.add.sound('shot');
-    let damageSound = game.add.sound('damage')
+    let shotSound = game.add.sound('shot', 0.5);
+    let dangerSound = game.add.sound('danger');
+    let damageSound = game.add.sound('damage');
 
     gameController.scanSound = scanSound;
     gameController.shotSound = shotSound;
@@ -95,7 +95,7 @@ function create()
     galaxy.animations.play('idle', 3, true);
 
     // -- Play Music --
-    var music = game.add.audio('bg_music', 0.5);
+    var music = game.add.audio('bg_music', 1);
     music.loopFull();
 
     // --- Init Player ---
@@ -213,6 +213,7 @@ function update()
 
 function showWinscreen()
 {
+    gameController.finished = true;
     winscreen = game.add.sprite(0, 0, 'winscreen');
     winscreen.animations.add('idle');
     winscreen.animations.play('idle', 2, true);
@@ -221,6 +222,7 @@ function showWinscreen()
 
 function showLosescreen()
 {
+    gameController.finished = true;
     losescreen = game.add.sprite(0, 0, 'losescreen');
     losescreen.animations.add('idle');
     losescreen.animations.play('idle', 2, true);

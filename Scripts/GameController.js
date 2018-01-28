@@ -17,6 +17,7 @@ export default class GameController
         this.ui_enemyvisiblecount = null;
         this.ui_enemycount = null;
         this.enemyVisibleCount = 0;
+        this.finished = false;
     }
 
     RegisterPlayer(_player)
@@ -161,6 +162,8 @@ export default class GameController
                 this.dangerSound.play();
 
                 tween.onComplete.add(() => {
+                    if (this.finished) return;
+
                     this.shotSound.play();
                     // do damage if in range
                     this.game.physics.arcade.overlap(shockArea, player.sprite, () => {
