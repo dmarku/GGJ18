@@ -39,7 +39,11 @@ function preload()
 }
 
 let playerData = {x: 100, y: 360};
-let goalData = {x: 640, y: 600};
+
+let goalData = {
+    x: Math.random() * 700 + 400,
+    y: Math.random() * 600 + 60
+};
 
 let enemycount = 20;
 
