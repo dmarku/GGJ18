@@ -12,8 +12,7 @@ import Player from './Scripts/Actors/Player';
 import Goal from './Scripts/Actors/Goal';
 import Enemy from './Scripts/Actors/Enemy';
 
-const game = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render});
-var gameController = new GameController(game);
+const game = new Phaser.Game(1280, 720, Phaser.AUTO);
 var winscreen = null;
 var losescreen = null;
 var credtisscreen = null;
@@ -24,30 +23,6 @@ let playerDead = false;
 // --- Controls ---
 
 // --- Functions ---
-function preload() 
-{
-    game.load.spritesheet('galaxie', 'Assets/galaxy_anim_01.png', 1280, 720);
-    game.load.spritesheet('winscreen', 'Assets/win_screen_01.png', 1280, 720);
-    game.load.spritesheet('losescreen', 'Assets/game_over_screen_01.png', 1280, 720);
-    game.load.spritesheet('credtisscreen', 'Assets/credit_screen_01.png', 1280, 720);
-    game.load.image('creditsexit', 'Assets/credit_screen_EXIT_01.png', 92, 98);
-    game.load.image('creditsbutton', 'Assets/overlay_credit-button_01.png', 78, 73);
-    
-    game.load.spritesheet('player', 'Assets/player_01.png', 512, 512);
-    game.load.spritesheet('goal', 'Assets/goal_01.png', 512, 512, 8);
-
-    game.load.spritesheet('enemy', 'Assets/enemy_a_01.png', 512, 512, 8);
-    game.load.spritesheet('fog', 'Assets/fog_01.png', 512, 512);
-    game.load.image('crosshair', 'Assets/cross_01.png', 512, 512);
-
-    game.load.image('hud', 'Assets/overlay_01.png', 1280, 720);
-
-    game.load.audio('bg_music', 'Assets/audio/bensound-relaxing.ogg');
-    game.load.audio('scan', 'Assets/audio/waves_01.ogg');
-    game.load.audio('shot', 'Assets/audio/shot_01.ogg');
-    game.load.audio('danger', 'Assets/audio/danger_02.ogg');
-    game.load.audio('damage', 'Assets/audio/aua_01.ogg');
-}
 
 let playerData = {x: 100, y: 360};
 
@@ -74,17 +49,49 @@ let creditsButton;
 let creditsexitButton;
 let restartButton;
 
-function create() 
+class Play extends Phaser.State {
+
+constructor () {
+    super();
+    this.gameController = new GameController(game);
+}
+
+preload() 
+{
+    game.load.spritesheet('galaxie', 'Assets/galaxy_anim_01.png', 1280, 720);
+    game.load.spritesheet('winscreen', 'Assets/win_screen_01.png', 1280, 720);
+    game.load.spritesheet('losescreen', 'Assets/game_over_screen_01.png', 1280, 720);
+    game.load.spritesheet('credtisscreen', 'Assets/credit_screen_01.png', 1280, 720);
+    game.load.image('creditsexit', 'Assets/credit_screen_EXIT_01.png', 92, 98);
+    game.load.image('creditsbutton', 'Assets/overlay_credit-button_01.png', 78, 73);
+    
+    game.load.spritesheet('player', 'Assets/player_01.png', 512, 512);
+    game.load.spritesheet('goal', 'Assets/goal_01.png', 512, 512, 8);
+
+    game.load.spritesheet('enemy', 'Assets/enemy_a_01.png', 512, 512, 8);
+    game.load.spritesheet('fog', 'Assets/fog_01.png', 512, 512);
+    game.load.image('crosshair', 'Assets/cross_01.png', 512, 512);
+
+    game.load.image('hud', 'Assets/overlay_01.png', 1280, 720);
+
+    game.load.audio('bg_music', 'Assets/audio/bensound-relaxing.ogg');
+    game.load.audio('scan', 'Assets/audio/waves_01.ogg');
+    game.load.audio('shot', 'Assets/audio/shot_01.ogg');
+    game.load.audio('danger', 'Assets/audio/danger_02.ogg');
+    game.load.audio('damage', 'Assets/audio/aua_01.ogg');
+}
+
+create() 
 {
     let scanSound = game.add.sound('scan');
     let shotSound = game.add.sound('shot', 0.5);
     let dangerSound = game.add.sound('danger');
     let damageSound = game.add.sound('damage');
 
-    gameController.scanSound = scanSound;
-    gameController.shotSound = shotSound;
-    gameController.dangerSound = dangerSound;
-    gameController.damageSound = damageSound;
+    this.gameController.scanSound = scanSound;
+    this.gameController.shotSound = shotSound;
+    this.gameController.dangerSound = dangerSound;
+    this.gameController.damageSound = damageSound;
 
     // --- Start Physics ---
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -104,21 +111,21 @@ function create()
 
     // -- Player Input --
     var playerInput = new InputPair(game, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN);
-    gameController.RegisterInput(playerInput);
+    this.gameController.RegisterInput(playerInput);
 
     this.scanKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    this.scanKey.onDown.add(() => gameController.Scan());
+    this.scanKey.onDown.add(() => this.gameController.Scan());
 
     // -- Create Player Instance --
     var player = new Player(player_sprite, 0.2, game);
     player.transform.position.setTo(playerData.x, playerData.y);
-    gameController.RegisterPlayer(player);
+    this.gameController.RegisterPlayer(player);
 
     // --- Init Goal ---
     var goal_sprite = game.add.sprite(0,0, 'goal');
     var goal = new Goal(goal_sprite, 0.2, game, game.add.sprite(0, 0, 'fog'));
     goal.transform.position.setTo(goalData.x, goalData.y);
-    gameController.RegisterGoal(goal);
+    this.gameController.RegisterGoal(goal);
 
     // --- Init Enemies ---
     let enemies = enemyData.map(({x, y}) => {
@@ -131,7 +138,7 @@ function create()
     });
 
     enemies.forEach(e => {
-        gameController.RegisterEnemy(e);
+        this.gameController.RegisterEnemy(e);
     });
 
     // --- Start Physics ---
@@ -173,63 +180,63 @@ function create()
         align: "center"
     });
 
-    creditsButton = game.add.button(game.world.centerX - 38, game.height +2, 'creditsbutton', showCredtisscreen, this, 20, 20, 0);
+    creditsButton = game.add.button(game.world.centerX - 38, game.height +2, 'creditsbutton', () => this.showCredtisscreen(), this, 20, 20, 0);
     creditsButton.anchor.setTo(0, 1);
 
     credtisscreen = game.add.sprite(0, 0, 'credtisscreen');
-    creditsexitButton = game.add.button(game.width - 100, 10, 'creditsexit', hideCreditsscreen, this, 20, 20, 0);
+    creditsexitButton = game.add.button(game.width - 100, 10, 'creditsexit', () => this.hideCreditsscreen(), this, 20, 20, 0);
 
     credtisscreen.visible = false;
     creditsexitButton.visible = false;
 
-    gameController.RegisterUI(lifebar, enemyVisibleCount, enemyCount);
+    this.gameController.RegisterUI(lifebar, enemyVisibleCount, enemyCount);
 }
 
 
-function update() 
+update() 
 {
-    if (!playerDead && gameController.player.health <= 0) {
+    if (!playerDead && this.gameController.player.health <= 0) {
         playerDead = true;
-        showLosescreen();
+        this.showLosescreen();
         //alert("You have lost all your health. Game Over. D:");
     }
 
     if(foundGoal || playerDead)
         return;
 
-    gameController.Update();
+    this.gameController.Update();
 
-    if(gameController.goal.sprite.visible)
+    if(this.gameController.goal.sprite.visible)
     {
-        game.physics.arcade.overlap(gameController.player.sprite, gameController.goal.sprite, () => {
+        game.physics.arcade.overlap(this.gameController.player.sprite, this.gameController.goal.sprite, () => {
             if(!foundGoal) 
             {
                 foundGoal = true;
-                showWinscreen();
+                this.showWinscreen();
             }
         }, null, this);
     }
 }
 
-function showWinscreen()
+showWinscreen()
 {
-    gameController.finished = true;
+    this.gameController.finished = true;
     winscreen = game.add.sprite(0, 0, 'winscreen');
     winscreen.animations.add('idle');
     winscreen.animations.play('idle', 2, true);
     game.world.bringToTop(winscreen);
 }
 
-function showLosescreen()
+showLosescreen()
 {
-    gameController.finished = true;
+    this.gameController.finished = true;
     losescreen = game.add.sprite(0, 0, 'losescreen');
     losescreen.animations.add('idle');
     losescreen.animations.play('idle', 2, true);
     game.world.bringToTop(losescreen);
 }
 
-function showCredtisscreen()
+showCredtisscreen()
 {
     credtisscreen.visible = true;
     creditsexitButton.visible = true;
@@ -237,19 +244,24 @@ function showCredtisscreen()
     game.world.bringToTop(creditsexitButton);
 }
 
-function hideCreditsscreen()
+hideCreditsscreen()
 {
     credtisscreen.visible = false;
     creditsexitButton.visible = false;
 }
 
-function render()
+render()
 {
-    //game.debug.body(gameController.player.sprite);
-    //game.debug.body(gameController.goal.sprite);
+    //game.debug.body(this.gameController.player.sprite);
+    //game.debug.body(this.gameController.goal.sprite);
     /*
-    for (let enemy of gameController.enemies) {
+    for (let enemy of this.gameController.enemies) {
         game.debug.body(enemy.sprite, '#ff000080');
     }
     */
 }
+
+}
+
+game.state.add('play', Play);
+game.state.start('play');
