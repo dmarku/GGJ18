@@ -96,6 +96,45 @@ export default class GameController
             }
     
             enemy.UpdateVisibility(conRangeLevel);
+
+            // --- enemy launch behaviour ---
+            if (distance < enemy.targetingRange) {
+                let {x, y} = player.sprite.worldPosition;
+                let radius = 150;
+                let chargeTime = enemy.shockChargeTime;
+
+                let shockArea = this.game.add.graphics(x, y);
+                shockArea.anchor.setTo(0.5);
+                this.game.physics.enable(shockArea, Phaser.Physics.ARCADE);
+
+                shockArea.clear();
+                shockArea.beginFill(0xff0000, 0.3);
+                shockArea.drawCircle(0, 0, radius * 2);
+                shockArea.endFill();
+
+                shockArea.body.setCircle(radius, 0, 0);
+
+                let shockCharge = this.game.add.graphics(x, y);
+                shockCharge.anchor.setTo(0.5);
+                
+                shockCharge.clear();
+                shockCharge.lineStyle(2, 0xff0000);
+                shockCharge.drawCircle(0, 0, radius * 2);
+
+                shockCharge.scale.setTo(0);
+                let tween = this.game.add.tween(shockCharge.scale);
+                tween.to({x: 1, y: 1}, chargeTime, 'Linear', true, 0);
+
+                tween.onComplete.add(() => {
+                    // do damage if in range
+                    this.game.physics.arcade.overlap(shockArea, player.sprite, () => {
+                        player.health -= 1;
+                        console.log(`damaged! health down to ${player.health}`);
+                    });
+                    shockArea.destroy();
+                    shockCharge.destroy();
+                });
+            }
         }
     }
 
@@ -124,6 +163,7 @@ export default class GameController
     
             goal.UpdateVisibility(conRangeLevel);
         }
+
     }
 
     UpdateInput()
