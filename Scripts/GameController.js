@@ -144,8 +144,8 @@ export default class GameController
                     player.health -= 1;
                     console.log(`damaged! health down to ${player.health}`);
                 });
-                //shockArea.destroy
-                //shockcharge.destroy
+                shockArea.destroy();
+                shockCharge.destroy();
             });
         }
     }
