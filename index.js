@@ -42,9 +42,6 @@ let enemyData = [
     {x: 750, y: 500}
 ];
 
-let playerData = {x: 750, y: 100};
-let goalData = {x: 530, y: 100};
-
 let hud;
 let lifebar;
 let enemyVisibleCount;
@@ -111,13 +108,15 @@ function create()
     //let enemyCount;
 
     lifebar = game.add.text(
-        75, game.height - 110, 
+        180, game.height - 75, 
         "100", 
         {
         font: "55px Arial",
         fill: "#ffffff",
         align: "center"
     });
+
+    lifebar.anchor.setTo(1, 0.5);
 
     enemyVisibleCount = game.add.text(
         game.width - 225, game.height - 110, 
@@ -130,16 +129,15 @@ function create()
     
     enemyCount = game.add.text(
         game.width - 125, game.height - 100, 
-        enemyData.length + 10, 
+        enemyData.length, 
         {
         font: "55px Arial",
         fill: "#ffffff",
         align: "center"
     });
 
+    gameController.RegisterUI(lifebar, enemyVisibleCount, enemyCount);
 }
-
-
 
 let foundGoal = false;
 let playerDead = false;

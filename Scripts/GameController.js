@@ -14,6 +14,10 @@ export default class GameController
         this.goal = null;
         this.input = null;
         this.game = _game;
+        this.ui_lifebar = null;
+        this.ui_enemyvisiblecount = null;
+        this.ui_enemycount = null;
+        this.enemyVisibleCount = 0;
     }
 
     RegisterPlayer(_player)
@@ -37,6 +41,13 @@ export default class GameController
         this.cursorKeys = this.game.input.keyboard.createCursorKeys();
     }
 
+    RegisterUI(_ui_lifebar, _ui_enemyvisiblecount, _ui_enemycount)
+    {
+        this.ui_lifebar = _ui_lifebar;
+        this.ui_enemyvisiblecount = _ui_enemyvisiblecount;
+        this.ui_enemycount = _ui_enemycount;
+    }
+
     //#region GameSystem
 
     StartGame()
@@ -49,10 +60,17 @@ export default class GameController
         this.UpdateInput();
 
         this.player.Update();
+        this.enemyVisibleCount = 0;
+
         for(let enemy of this.enemies) 
         {
             enemy.Update();
+
+            if(enemy.sprite.visible)
+                this.enemyVisibleCount++; 
         }
+
+        this.ui_enemyvisiblecount.setText(this.enemyVisibleCount);
     }
 
     Scan()
@@ -94,7 +112,9 @@ export default class GameController
                     conRangeLevel -= 1;
                 }
             }
-    
+            
+            let enemyStatus = enemy.sprite.visible;
+            
             enemy.UpdateVisibility(conRangeLevel);
 
             // --- enemy launch behaviour ---
@@ -129,6 +149,7 @@ export default class GameController
                     // do damage if in range
                     this.game.physics.arcade.overlap(shockArea, player.sprite, () => {
                         player.health -= 1;
+                        this.ui_lifebar.setText((player.health/5)*100);
                         console.log(`damaged! health down to ${player.health}`);
                     });
                     shockArea.destroy();
