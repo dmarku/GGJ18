@@ -153,7 +153,7 @@ export default class GameController
                 shockCharge.clear();
                 shockCharge.lineStyle(2, 0xff0000);
                 shockCharge.drawCircle(0, 0, radius * 2);
-                
+
                 shockCharge.scale.setTo(0);
                 let tween = this.game.add.tween(shockCharge.scale);
                 tween.to({x: 1, y: 1}, chargeTime, 'Linear', true, 0);
@@ -165,6 +165,7 @@ export default class GameController
                     // do damage if in range
                     this.game.physics.arcade.overlap(shockArea, player.sprite, () => {
                         player.health -= 1;
+                        this.damageSound.play();
                         this.ui_lifebar.setText((player.health/5)*100);
                         console.log(`damaged! health down to ${player.health}`);
                     });

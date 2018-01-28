@@ -42,10 +42,11 @@ function preload()
 
     game.load.image('hud', 'Assets/overlay_01.png', 1280, 720);
 
-    game.load.audio('bg_music', 'Assets/audio/Space_Station_Experience.mp3');
+    game.load.audio('bg_music', 'Assets/audio/bensound-relaxing.mp3');
     game.load.audio('scan', 'Assets/audio/waves_01.ogg');
     game.load.audio('shot', 'Assets/audio/shot_01.ogg');
-    game.load.audio('danger', 'Assets/audio/danger_01.ogg');
+    game.load.audio('danger', 'Assets/audio/danger_02.ogg');
+    game.load.audio('damage', 'Assets/audio/aua_01.ogg');
 }
 
 let playerData = {x: 100, y: 360};
@@ -78,10 +79,12 @@ function create()
     let scanSound = game.add.sound('scan');
     let shotSound = game.add.sound('shot');
     let dangerSound = game.add.sound('shot');
+    let damageSound = game.add.sound('damage')
 
     gameController.scanSound = scanSound;
     gameController.shotSound = shotSound;
     gameController.dangerSound = dangerSound;
+    gameController.damageSound = damageSound;
 
     // --- Start Physics ---
     game.physics.startSystem(Phaser.Physics.ARCADE);
