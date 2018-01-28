@@ -105,7 +105,7 @@ let playerDead = false;
 
 function update() 
 {
-    if (gameController.player.health <= 0) {
+    if (!playerDead && gameController.player.health <= 0) {
         playerDead = true;
         alert("You have lost all your health. Game Over. D:");
     }
