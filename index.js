@@ -177,12 +177,16 @@ function showWinscreen()
 
 function render()
 {
-    if(foundGoal)
-        return;
-
-    game.debug.body(gameController.player.sprite);
-    game.debug.body(gameController.goal.sprite);
+    //game.debug.body(gameController.player.sprite);
+    //game.debug.body(gameController.goal.sprite);
+    /*
+    for (let enemy of gameController.enemies) {
+        game.de
+    //game.debug.body(gameController.player.sprite);
+    //game.debug.body(gameController.goal.sprite);
+    /*
     for (let enemy of gameController.enemies) {
         game.debug.body(enemy.sprite, '#ff000080');
     }
+    */
 }
