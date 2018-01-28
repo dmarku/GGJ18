@@ -35,14 +35,6 @@ for (let i = 0; i < enemycount; i++) {
     });
 }
 
-let hud;
-let lifebar;
-let enemyVisibleCount;
-let enemyCount;
-let creditsButton;
-let creditsexitButton;
-let restartButton;
-
 class Play extends Phaser.State {
 
 constructor () {
@@ -139,13 +131,9 @@ create()
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     // --- HUD ---
-    hud = game.add.sprite(0, 0, 'hud');
+    this.hud = game.add.sprite(0, 0, 'hud');
 
-    //let lifebar;
-    //let enemyVisibleCount;
-    //let enemyCount;
-
-    lifebar = game.add.text(
+    this.lifebar = game.add.text(
         180, game.height - 75, 
         "100", 
         {
@@ -154,9 +142,9 @@ create()
         align: "center"
     });
 
-    lifebar.anchor.setTo(1, 0.5);
+    this.lifebar.anchor.setTo(1, 0.5);
 
-    enemyVisibleCount = game.add.text(
+    this.enemyVisibleCount = game.add.text(
         game.width - 225, game.height - 110, 
         0, 
         {
@@ -165,7 +153,7 @@ create()
         align: "center"
     });
     
-    enemyCount = game.add.text(
+    this.enemyCount = game.add.text(
         game.width - 125, game.height - 100, 
         enemyData.length, 
         {
@@ -174,16 +162,16 @@ create()
         align: "center"
     });
 
-    creditsButton = game.add.button(game.world.centerX - 38, game.height +2, 'creditsbutton', () => this.showCreditsscreen(), this, 20, 20, 0);
-    creditsButton.anchor.setTo(0, 1);
+    this.creditsButton = game.add.button(game.world.centerX - 38, game.height +2, 'creditsbutton', () => this.showCreditsscreen(), this, 20, 20, 0);
+    this.creditsButton.anchor.setTo(0, 1);
 
     this.creditsscreen = game.add.sprite(0, 0, 'creditsscreen');
-    creditsexitButton = game.add.button(game.width - 100, 10, 'creditsexit', () => this.hideCreditsscreen(), this, 20, 20, 0);
+    this.creditsexitButton = game.add.button(game.width - 100, 10, 'creditsexit', () => this.hideCreditsscreen(), this, 20, 20, 0);
 
     this.creditsscreen.visible = false;
-    creditsexitButton.visible = false;
+    this.creditsexitButton.visible = false;
 
-    this.gameController.RegisterUI(lifebar, enemyVisibleCount, enemyCount);
+    this.gameController.RegisterUI(this.lifebar, this.enemyVisibleCount, this.enemyCount);
 }
 
 
@@ -213,15 +201,15 @@ update()
 showCreditsscreen()
 {
     this.creditsscreen.visible = true;
-    creditsexitButton.visible = true;
+    this.creditsexitButton.visible = true;
     game.world.bringToTop(this.creditsscreen);
-    game.world.bringToTop(creditsexitButton);
+    game.world.bringToTop(this.creditsexitButton);
 }
 
 hideCreditsscreen()
 {
     this.creditsscreen.visible = false;
-    creditsexitButton.visible = false;
+    this.creditsexitButton.visible = false;
 }
 
 render()
