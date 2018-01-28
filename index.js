@@ -13,12 +13,6 @@ import Goal from './Scripts/Actors/Goal';
 import Enemy from './Scripts/Actors/Enemy';
 
 const game = new Phaser.Game(1280, 720, Phaser.AUTO);
-var winscreen = null;
-var losescreen = null;
-var credtisscreen = null;
-
-let foundGoal = false;
-let playerDead = false;
 
 // --- Controls ---
 
@@ -54,14 +48,13 @@ class Play extends Phaser.State {
 constructor () {
     super();
     this.gameController = new GameController(game);
+    this.foundGoal = false;
 }
 
 preload() 
 {
     game.load.spritesheet('galaxie', 'Assets/galaxy_anim_01.png', 1280, 720);
-    game.load.spritesheet('winscreen', 'Assets/win_screen_01.png', 1280, 720);
-    game.load.spritesheet('losescreen', 'Assets/game_over_screen_01.png', 1280, 720);
-    game.load.spritesheet('credtisscreen', 'Assets/credit_screen_01.png', 1280, 720);
+    game.load.spritesheet('creditsscreen', 'Assets/credit_screen_01.png', 1280, 720);
     game.load.image('creditsexit', 'Assets/credit_screen_EXIT_01.png', 92, 98);
     game.load.image('creditsbutton', 'Assets/overlay_credit-button_01.png', 78, 73);
     
@@ -88,6 +81,7 @@ create()
     let dangerSound = game.add.sound('danger');
     let damageSound = game.add.sound('damage');
 
+    this.creditsscreen = null;
     this.gameController.scanSound = scanSound;
     this.gameController.shotSound = shotSound;
     this.gameController.dangerSound = dangerSound;
@@ -180,13 +174,13 @@ create()
         align: "center"
     });
 
-    creditsButton = game.add.button(game.world.centerX - 38, game.height +2, 'creditsbutton', () => this.showCredtisscreen(), this, 20, 20, 0);
+    creditsButton = game.add.button(game.world.centerX - 38, game.height +2, 'creditsbutton', () => this.showCreditsscreen(), this, 20, 20, 0);
     creditsButton.anchor.setTo(0, 1);
 
-    credtisscreen = game.add.sprite(0, 0, 'credtisscreen');
+    this.creditsscreen = game.add.sprite(0, 0, 'creditsscreen');
     creditsexitButton = game.add.button(game.width - 100, 10, 'creditsexit', () => this.hideCreditsscreen(), this, 20, 20, 0);
 
-    credtisscreen.visible = false;
+    this.creditsscreen.visible = false;
     creditsexitButton.visible = false;
 
     this.gameController.RegisterUI(lifebar, enemyVisibleCount, enemyCount);
@@ -195,58 +189,38 @@ create()
 
 update() 
 {
-    if (!playerDead && this.gameController.player.health <= 0) {
-        playerDead = true;
-        this.showLosescreen();
-        //alert("You have lost all your health. Game Over. D:");
+    if (this.gameController.player.health <= 0) {
+        this.game.state.start('gameover');
     }
 
-    if(foundGoal || playerDead)
-        return;
+    if(this.foundGoal) {
+        this.game.state.start('win');
+    }
 
     this.gameController.Update();
 
     if(this.gameController.goal.sprite.visible)
     {
         game.physics.arcade.overlap(this.gameController.player.sprite, this.gameController.goal.sprite, () => {
-            if(!foundGoal) 
+            if(!this.foundGoal) 
             {
-                foundGoal = true;
-                this.showWinscreen();
+                this.game.state.start('win');
             }
         }, null, this);
     }
 }
 
-showWinscreen()
+showCreditsscreen()
 {
-    this.gameController.finished = true;
-    winscreen = game.add.sprite(0, 0, 'winscreen');
-    winscreen.animations.add('idle');
-    winscreen.animations.play('idle', 2, true);
-    game.world.bringToTop(winscreen);
-}
-
-showLosescreen()
-{
-    this.gameController.finished = true;
-    losescreen = game.add.sprite(0, 0, 'losescreen');
-    losescreen.animations.add('idle');
-    losescreen.animations.play('idle', 2, true);
-    game.world.bringToTop(losescreen);
-}
-
-showCredtisscreen()
-{
-    credtisscreen.visible = true;
+    this.creditsscreen.visible = true;
     creditsexitButton.visible = true;
-    game.world.bringToTop(credtisscreen);
+    game.world.bringToTop(this.creditsscreen);
     game.world.bringToTop(creditsexitButton);
 }
 
 hideCreditsscreen()
 {
-    credtisscreen.visible = false;
+    this.creditsscreen.visible = false;
     creditsexitButton.visible = false;
 }
 
@@ -263,5 +237,49 @@ render()
 
 }
 
+class Win extends Phaser.State {
+    constructor () {
+        super();
+    }
+
+    preload () {
+        game.load.spritesheet('winscreen', 'Assets/win_screen_01.png', 1280, 720);
+    }
+
+    create () {
+        this.winscreen = this.game.add.sprite(0, 0, 'winscreen');
+        this.winscreen.animations.add('idle');
+        this.winscreen.animations.play('idle', 2, true);
+        this.game.world.bringToTop(this.winscreen);
+
+        this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(() => {
+            this.game.state.start('play');
+        });
+    }
+}
+
+class GameOver extends Phaser.State {
+    constructor () {
+        super();
+    }
+
+    preload () {
+        this.game.load.spritesheet('losescreen', 'Assets/game_over_screen_01.png', 1280, 720);
+    }
+
+    create () {
+        this.losescreen = this.game.add.sprite(0, 0, 'losescreen');
+        this.losescreen.animations.add('idle');
+        this.losescreen.animations.play('idle', 2, true);
+        this.game.world.bringToTop(this.losescreen);
+
+        this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(() => {
+            this.game.state.start('play');
+        });
+    }
+}
+
 game.state.add('play', Play);
+game.state.add('win', Win);
+game.state.add('gameover', GameOver);
 game.state.start('play');
