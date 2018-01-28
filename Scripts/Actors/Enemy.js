@@ -22,6 +22,22 @@ export default class Enemy extends Actor
         this.fog.visible = false;
     }
 
+    UpdateVisibility(level)
+    {
+        console.log("UpdateVisibility");
+        if(!this.fog.visible)
+        {
+            this.fog.visible = true;
+        }
+        else if(this.fog.alpha > 0)
+        {
+            this.fog.alpha -= 0.05 * (level);
+
+            if(this.fog.alpha < 0.2)
+                this.sprite.visible = true;
+        }
+    }
+
     Update()
     {
         //console.log("EnemyUpdate");

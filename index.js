@@ -21,20 +21,23 @@ var winscreen = null;
 // --- Functions ---
 function preload() 
 {
-    game.load.spritesheet('galaxie', 'Assets/galaxy_anim_01.png', 960, 540);
-    game.load.spritesheet('winscreen', 'Assets/win_screen_01.png', 960, 540);
+    //game.load.spritesheet('galaxie', 'Assets/galaxy_anim_01.png', 960, 540);
+    //game.load.spritesheet('winscreen', 'Assets/win_screen_01.png', 960, 540);
     game.load.spritesheet('player', 'Assets/player_01.png', 512, 512);
     game.load.spritesheet('goal', 'Assets/goal_01.png', 512, 512, 8);
 
     game.load.spritesheet('enemy', 'Assets/enemy_a_01.png', 512, 512, 8);
     game.load.spritesheet('fog', 'Assets/fog_01.png', 512, 512);
 
-    game.load.audio('bg_music', 'Assets/Space_Station_Experience.mp3');
+    //game.load.audio('bg_music', 'Assets/Space_Station_Experience.mp3');
 }
 
 let enemyData = [
     {x: 640, y: 360}
 ];
+
+let playerData = {x: 750, y: 100};
+let goalData = {x: 530, y: 100};
 
 function create() 
 {
@@ -66,13 +69,13 @@ function create()
 
     // -- Create Player Instance --
     var player = new Player(player_sprite, 0.2, game);
-    player.transform.position.setTo(750, 100);
+    player.transform.position.setTo(playerData.x, playerData.y);
     gameController.RegisterPlayer(player);
 
     // --- Init Goal ---
     var goal_sprite = game.add.sprite(0,0, 'goal');
-    var goal = new Goal(goal_sprite, 0.2, game, game.add.sprite(530, 100, 'fog'));
-    goal.transform.position.setTo(530, 100);
+    var goal = new Goal(goal_sprite, 0.2, game, game.add.sprite(0, 0, 'fog'));
+    goal.transform.position.setTo(goalData.x, goalData.y);
     gameController.RegisterGoal(goal);
 
     // --- Init Enemies ---

@@ -12,21 +12,8 @@ export default class Actor
         this.transform.addChild(_sprite);
 
         this.game.physics.enable(_sprite, Phaser.Physics.ARCADE);
-    }
 
-    UpdateVisibility(level)
-    {
-        if(!this.fog.visible)
-        {
-            this.fog.visible = true;
-        }
-        else if(this.fog.alpha > 0)
-        {
-            this.fog.alpha -= 0.05 * (level);
-
-            if(this.fog.alpha < 0.2)
-                this.sprite.visible = true;
-        }
+        this.fog = null;
     }
 
     Update()

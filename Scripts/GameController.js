@@ -101,16 +101,16 @@ export default class GameController
 
     GoalPinged(player, goal)
     {
-        console.log("GoalPinged");
-        let distance = this.game.physics.arcade.distanceToXY(player.transform, goal.sprite.x, goal.sprite.y);
+        let distance = this.game.physics.arcade.distanceToXY(player.transform, goal.transform.x, goal.transform.y);
         let conRangeLevel = 3;
         
-        let direction = (Math.atan2(goal.sprite.y - player.transform.y, goal.sprite.x - player.transform.x) * 180 / Math.PI);
+        let direction = (Math.atan2(goal.transform.y - player.transform.y, goal.transform.x - player.transform.x) * 180 / Math.PI);
         direction += 180;
         let angle = (player.transform.worldRotation * 180) / Math.PI;
         angle += 180;
         let sightAngle = Math.abs(direction - angle);
-        console.log(sightAngle);
+        
+        console.log(player.transform.x);
             
         if(sightAngle <= player.cones.current().angle)
         {
