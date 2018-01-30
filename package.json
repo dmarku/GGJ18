@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "http-serve": "^1.0.1",
+    "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.1"
   },

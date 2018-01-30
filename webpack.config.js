@@ -1,5 +1,6 @@
 'use strict';
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -17,5 +18,16 @@ module.exports = {
             warnings: true,
             errors: true
         }
-    }
+    },
+    plugins: [
+        new UglifyJsPlugin({
+            uglifyOptions: {
+                drop_console: true,
+                minimize: true,
+                output: {
+                    comments: false
+                }
+            }
+        })
+    ]
 }
