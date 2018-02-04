@@ -14,27 +14,6 @@ import Enemy from './Scripts/Actors/Enemy';
 
 const game = new Phaser.Game(1280, 720, Phaser.AUTO, 'game-container');
 
-// --- Controls ---
-
-// --- Functions ---
-
-let playerData = {x: 100, y: 360};
-
-let goalData = {
-    x: Math.random() * 700 + 400,
-    y: Math.random() * 600 + 60
-};
-
-let enemycount = 20;
-
-let enemyData = [];
-for (let i = 0; i < enemycount; i++) {
-    enemyData.push({
-        x: Math.random() * 1000 + 140,
-        y: Math.random() * 600 + 60
-    });
-}
-
 class Play extends Phaser.State {
 
 constructor () {
@@ -68,6 +47,23 @@ preload()
 
 create() 
 {
+    let playerData = {x: 100, y: 360};
+
+    let goalData = {
+        x: Math.random() * 700 + 400,
+        y: Math.random() * 600 + 60
+    };
+
+    let enemycount = 20;
+
+    let enemyData = [];
+    for (let i = 0; i < enemycount; i++) {
+        enemyData.push({
+            x: Math.random() * 1000 + 140,
+            y: Math.random() * 600 + 60
+        });
+    }
+
     let scanSound = game.add.sound('scan');
     let shotSound = game.add.sound('shot', 0.5);
     let dangerSound = game.add.sound('danger');
