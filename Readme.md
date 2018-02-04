@@ -21,6 +21,6 @@ The game runs entirely in the browser. However, to build a working version from 
 
 3)  Change into the project directory and run `npm install` to download and install the project's dependencies. This may take a while.
 
-4)  Once that's done, you can build the game with `npm build` and then open the `index.html` file in your browser.
+4)  Once that's done, you can build the game with `npm run build` and then open the `index.html` file in your browser.
 
-    Alternatively, run `npm dev` and open `localhost:8080` in your browser. Any changes to the javascript files should trigger an automatic page reload.
+    Alternatively, run `npm run dev` and open `localhost:8080` in your browser. Any changes to the javascript files should trigger an automatic page reload.
