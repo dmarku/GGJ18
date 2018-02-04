@@ -1,9 +1,9 @@
-// fix global variables to make Phaser run
-window.PIXI   = require('phaser-ce/build/custom/pixi');
-window.p2     = require('phaser-ce/build/custom/p2');
-window.Phaser = require('phaser-ce/build/custom/phaser-split');
+// phaser expects PIXI, p2 and Phaser to exist on the global window object
+import 'expose-loader?PIXI!phaser-ce/build/custom/pixi';
+import 'expose-loader?p2!phaser-ce/build/custom/p2';
+import 'expose-loader?Phaser!phaser-ce/build/custom/phaser-split';
 
-const Phaser = require('phaser-ce');
+import Phaser from 'phaser-ce';
 
 import GameController from './Scripts/GameController';
 import InputPair from './Scripts/InputController';
@@ -240,7 +240,7 @@ class Win extends Phaser.State {
         this.winscreen.animations.play('idle', 2, true);
         this.game.world.bringToTop(this.winscreen);
 
-        this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(() => {
+        this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(() => {
             this.game.state.start('play');
         });
     }
@@ -261,7 +261,7 @@ class GameOver extends Phaser.State {
         this.losescreen.animations.play('idle', 2, true);
         this.game.world.bringToTop(this.losescreen);
 
-        this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(() => {
+        this.game.input.keyboard.addKey(Phaser.Keyboard.R).onDown.add(() => {
             this.game.state.start('play');
         });
     }
