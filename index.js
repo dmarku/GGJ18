@@ -12,7 +12,7 @@ import Player from './Scripts/Actors/Player';
 import Goal from './Scripts/Actors/Goal';
 import Enemy from './Scripts/Actors/Enemy';
 
-const game = new Phaser.Game(1280, 720, Phaser.AUTO);
+const game = new Phaser.Game(1280, 720, Phaser.AUTO, 'game-container');
 
 // --- Controls ---
 

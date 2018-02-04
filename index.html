@@ -3,12 +3,42 @@
     <head>
         <meta charset="utf-8">
         <title>GGJ 2018: Find your alien friend</title>
+
+        <style>
+            body {
+                background: #282827;
+                color: white;
+                font-family: 'Open Sans', sans-serif;
+            }
+
+            body h1 {
+                text-align: center;
+            }
+
+            body p {
+                max-width: 1280px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            #game-container {
+                width: 1280px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
     </head>
 
     <body>
         <h1>Find your alien friend</h1>
-        <p><b>Controls</b> cursor keys: player movement; F/R: cycle through scanning cones; Spacebar: scan</p>
-        <p>Press R in game end screens to restart</p>
+        <p>
+        Find your lost friend in space. Transmit scanning signals to sense your environment and reveal your friend again.
+        But beware: There are also hostile creatures around which will attack you when they receive your signal.
+        Don't get caught in the blast when they fire!
+        </p>
+        <p>Use <strong>cursor keys</strong> to move around, <strong>spacebar</strong> to scan for your friend and enemies, <strong>F/R</strong> to change the width and range of your scanning cone</p>
+        <p>Pressing <strong>R</strong> in end screens will restart the game</p>
+        <div id="game-container"></div>
         <script src="./bundle.main.js"></script>
     </body>
 </html>
