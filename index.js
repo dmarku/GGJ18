@@ -1,7 +1,7 @@
-// fix global variables to make Phaser run
-window.PIXI   = require('phaser-ce/build/custom/pixi');
-window.p2     = require('phaser-ce/build/custom/p2');
-window.Phaser = require('phaser-ce/build/custom/phaser-split');
+// phaser expects PIXI, p2 and Phaser to exist on the global window object
+import 'expose-loader?PIXI!phaser-ce/build/custom/pixi';
+import 'expose-loader?p2!phaser-ce/build/custom/p2';
+import 'expose-loader?Phaser!phaser-ce/build/custom/phaser-split';
 
 import Phaser from 'phaser-ce';
 
